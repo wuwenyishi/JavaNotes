@@ -1,884 +1,721 @@
-
-
-
-
-
-
-# 同事：你能跟我聊聊class文件么？
-
-
+# 敖丙字节一面：能聊聊字节码么？
 
 
 
 # 1.前言
 
-上次在《[JAVA代码编译流程是怎样的？](http://mp.weixin.qq.com/s?__biz=MzAwNDA2OTM1Ng==&mid=2453156810&idx=1&sn=b8e7c90ea85775fbe91e2f5aaf0a9ead&chksm=8cfd1149bb8a985f6dbda9502006ff840c3ed5c54912fa41039016d4d0ee2ead90616f53c598&scene=21#wechat_redirect)》一文中已经聊过了**Java源码经过编译器的一系列转换最终生成标准的Class文件**的过程，我们用一张图来简单地回顾一下：
+上一篇《[你能和我聊聊Class文件么](http://mp.weixin.qq.com/s?__biz=MzAwNDA2OTM1Ng==&mid=2453157347&idx=1&sn=e8873bac7b92163ce2d54df41d06f4dc&chksm=8cfd1760bb8a9e76ce2511032ed652708b57fcd0daf00916cda9f3ec8019d7538031d35fb4a7&scene=21#wechat_redirect)》中，我们对Class文件的各个部分做了简单的介绍，当时留了一个很重要的部分没讲，不是敖丙不想讲啊，而是这一部分实在太重要了，不独立成篇好好zhejinrong 讲讲都对不起詹姆斯·高斯林。
 
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153011.png)
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155220.jpeg)
 
-Java为了实现“一次编写，到处运行”的跨平台特性，选取了Class文件这一中间格式来保证代码能在不同平台运行。**Class文件中记录了源代码中类的字段、方法指令等重要信息。**
+这最重要的部分当然就是**字节码**啦。
 
-Class文件可以在不同平台上的不同JVM中运行，它们最终生成的机器指令可能也是有差别的，但是，最终执行的结果一定要保证各平台一致。
+先来个定义：**Java字节码是一组可以由Java虚拟机(JVM)执行的高度优化的指令，它被记录在Class文件中，在虚拟机加载Class文件时执行。**
 
-> 有一点值得注意的是，虽然Java是与平台无关的语言，但并不意味着Java虚拟机（JVM）是各平台通用的，不同的平台上运行的JVM是有一定区别的，它们为用户屏蔽了各平台的一些差异。
+> 说大白话就是，字节码是Java虚拟机能够看明白的可执行指令。
 
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153018.png)
+前面的文章中已经强调了很多次了，**Class文件不等于字节码**，为什么我要一直强调这个事情呢？
 
-我们今天要聊的就是源代码和JVM中间的这一座桥梁——Class文件。
+因为在绝大部分的中文资料和博客中，这两个东西都被严重的弄混了...
 
-> 还有一件事，记得我们在《[JAVA代码编译流程是怎样的？](http://mp.weixin.qq.com/s?__biz=MzAwNDA2OTM1Ng==&mid=2453156810&idx=1&sn=b8e7c90ea85775fbe91e2f5aaf0a9ead&chksm=8cfd1149bb8a985f6dbda9502006ff840c3ed5c54912fa41039016d4d0ee2ead90616f53c598&scene=21#wechat_redirect)》一文的最后提到的 **字节码与Class文件的关系** 吗?
->
-> 在本文中，需要再次强调，**字节码只是Class文件中众多组成部分的其中之一**。
+导致现在一说字节码大家就会以为和Class文件是同一个东西，甚至有的文章直接把Class文件称为“字节码”文件。
 
-# 2.如何阅读Class文件
+这样的理解显然是有偏差的。
 
-Class文件的本质其实是一个十六进制的文件，所以其实可以直接用十六进制的编辑器打开Class文件。
+举个例子，比如我们所熟知的`.exe`可执行文件，`.exe`文件中包含机器指令，但除了机器指令之外，`.exe`文件还包含其他与准备执行这些指令相关的信息。
 
-如果这么做，则会看到如下的画面：
+因此我们不能说“机器指令”就是`.exe`文件，也不能把`.exe`文件称为“机器指令”文件，它们只是一种包含关系，仅此而已。
 
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153026.jpeg)
+同样的，Class文件并不等于字节码，只能说Class文件包含字节码。
 
-这就是Class文件最质朴的模样，是不是看得直挠头，完全看不出跟源码的联系呀。
+上次的文章中我们提到，**字节码（或者称为字节码指令）被存储在Class文件中的方法表中，它以Code属性的形式存在**。
 
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153033.png)
+因此，可以**通俗地说，字节码就是Class文件方法表（methods）中的Code属性。**
 
-别急，今天就带大家把这块难啃的骨头一点一点都吸收消化了，保证大家看完后面的解析再回过头来看这串字符都会觉得眉清目秀的。
+今天我们来好好聊聊字节码~
 
-当然，工欲善其事，必先利其器。在学习开始之前，先介绍两个能够比较直观地查看Class文件的工具。
+但是在讲字节码知识之前我们需要对Java虚拟机（Java Virtual Machine，简称JVM）的内部结构有一个简单的理解，毕竟字节码说到底**指示虚拟机各个部分需要执行什么操作的命令**，先简单了解JVM，知己知彼方能百战百胜。
 
-## 2.1 javap命令
+# 2、JVM的内部结构
 
-`javap`是jdk中自带的支持解析Class文件的工具，通过`javap`命令，可以查看生成的Class文件的各个部分结构，先来个简单的例子：
+我们借这么一张图来稍微聊聊JVM执行Class文件的流程。
 
-```java
-// 源代码
-package com.cc.demo;
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155228.png)
+
+这是学习JVM过程中躲不开的一张图，当然我们今天不讲那么深。
+
+**字节码是对方法执行过程的抽象**，于是我们今天只把跟方法执行过程**最直接相关**的几个部分拎出来讲讲。
+
+> 其实虚拟机执行代码时，虚拟机中的每一部分都需要参与其中，但本篇我们更关注的是跟"执行过程"相关的几个部分，也就是**跟代码顺序执行这一动态过程**相关的几个部分。有点云里雾里了吗，不要急，往下看。
+
+以Hello.class作为今天的主角。
+
+当Hello.class被加载时，首先经历的是**Class文件中的信息**被加载到JVM**方法区**中的过程。
+
+方法区是什么？
+
+**方法区是存储方法运行相关信息的一个区域**。
+
+如果把Class文件中的信息理解为**一颗颗的子弹**，那么方法区就可以看做是成JVM的"弹药库"，而将**Class文件中的信息加载到方法区这一过程相当于“子弹上膛”**。
+
+只有当子弹上膛后，JVM才具备了“开火”的能力，这很合理吧。
+
+例如，原本记录在Class文件中的**常量池**，此时被加载到方法区中，成为**运行时常量池**。同时，**字节码指令**也被装配到方法区中，为方法的运行提供支持。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155238.gif)类加载动图
+
+当类Hello.class被加载到方法区后，JVM会为Hello这个类在**堆**上新建一个**类对象**。
+
+第二个知识点来咯：堆是 **放置对象实例的地方，所有的对象实例以及数组都应当在运行时分配在堆上。**
+
+一般在执行新建对象相关操作时（例如 new HashMap），才会在堆上生成对象。
+
+但是你看，我们明明还没开始执行代码呢，这才刚处于类的加载阶段，堆上就开始进行对象分配了，**难道有什么特殊的对象实例在类加载的时候就被创建了吗？**
+
+没错，这个实例的确特殊，**它就是我们在反射时常常会用到的 java.lang.Class对象！！！**
+
+如果你忘了什么是反射的话，我来提醒你一下：
+
+```
+Hello obj = new Hello();
+Class<?> clz = obj.getClass();
+```
+
+在Hello这个类的Class文件被加载到方法区的之后，JVM就在堆区为这个新加载的Hello类建立了一个java.lang.Class实例。
+
+说到这里，你对”Java是一门面向对象的语言“这句话有没有更深入的理解——**在Java中，即使连类也是作为对象而存在的**。
+
+不仅如此，由于JDK 7之后，**类的静态变量存放在该类对应的java.lang.Class对象中**。因此当 java.lang.Class在堆上分配好之后，静态变量也将被分配空间，并获得最初的零值。
+
+> 注意，**这里的零值指的不是静态变量初始化哦**，仅仅只是在类对象空间分配后，JVM为所有的静态变量赋了一个**用于占位的零值**，零值很好理解嘛，也就是数值对象被设为0，引用类型被设为null。
+
+到这里为止，类的信息已经完全准备好了，接下来要开始的，就是执行<cliinit>方法。我们在《Java代码编译流程是怎样的》一文中讨论过，<clinit>方法是类的构造方法，它的作用是初试化类中所有的静态变量并执行用`static {}`包裹的代码块，而且该方法的收集是有顺序的：
+
+1. 父类静态变量初始化 及 父类静态代码块；
+2. 子类静态变量初始化 及 子类静态代码块。
+
+**<clinit>方法相当于是把静态的代码打包在一起执行**，而且<clinit>函数是在**编译时**就已经将这些与类相关的初始化代码按顺序收集在一起了，因此在Class文件中可以看到<clinit>函数：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155300.png)
+
+> 当然，如果类中既没有静态变量，也没有静态代码块，则不会有<clinit>函数。
+
+总之，如果<clinit>函数存在，那么在类被加载到JVM之后，<clinit>函数开始执行，初始化静态变量。
+
+接下来我们今天最重要的部分要登场了！！！
+
+**就决定是你了，虚拟机栈！！**
+
+第三个知识点：**虚拟机栈是线程中的方法的内存模型。**
+
+上面这句话听着很抽象是吧，没事，我来好好解释一下。
+
+首先要明白的是，**虚拟机栈，顾名思义是用栈结构实现的一种的线性表**，其限制是仅允许在表的**同一端进行插入和删除运算**，这一端被称为栈顶，相对地，把另一端称为栈底。
+
+栈的特性是每次操作都是从栈顶进或者从栈顶出，且满足先进后出的顺序，而虚拟机栈也继承了这一优良传统。
+
+**虚拟机栈是与方法执行最直接相关的一个区域**，用于记录Java方法调用的“活动记录”（activation record）。
+
+虚拟机栈以**栈帧**（frame）为单位线程的运行状态，每调用一个方法就会分配一个新的栈帧压入Java栈上，每从一个方法返回则弹出并撤销相应的栈帧。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155310.png)
+
+例如，这么一段代码：
+
+```
 public class Hello {
-    private final int a = 100;
-    int b = 101;
-    private final int c = 100;
-    float d = 100f;
+    public static int a = 0;
     public static void main(String[] args) {
-        int e = 102;
+        add(1,2);
+    }
+
+    public static int add(int x,int y) {
+        int z = x+y;
+        System.out.println(z);
+        return z;
     }
 }
 ```
 
-根据源代码生成Class文件之后，我们使用`javap`命令对其进行解析：
+它的调用链如下：
 
-```java
-ZMac-C1WM:demo aobing$ javap Hello.class
-Compiled from "Hello.java"
-public class com.cc.demo.Hello {
-  public com.cc.demo.Hello();
-  public static void main(java.lang.String[]);
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155318.gif)
+
+调用链
+
+现在你明白了吧，**代码中层层调用的概念在JVM里是使用栈数据结构来实现的**，调用方法时生成栈帧并入栈，方法执行完出栈，直到所有方法都出栈了，就意味着整个调用链结束。
+
+还记得二叉树的前序遍历怎么写的吗：
+
+```
+public void preOrderTraverse(TreeNode root) {
+  if (root != null) {
+    System.out.print(root.val + "->");
+    preOrderTraverse(root.left);
+    preOrderTraverse(root.right);
+  }
 }
 ```
 
-这样得到的解析结果显然太过于简单了，**只显示了基本的类名、方法和参数等**，显然无法满足我们解析Class文件的实际需求。
-
-> 在上述这个例子中，源码中本来没有编写任何的构造函数，但在生成的Class文件中，已经为我们加上了默认的无参构造器。
->
-> 我们在上一篇《JAVA代码编译流程是怎样的？》中提过，添加默认无参构造器的行为是在填充符号表时完成的。
-
-怎么说呢，看到这里，你大概觉得`javap`命令有点东西，但也没有很多东西。
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153056.png)
-
-其实因为我们出门没有忘记买装备了，没有发挥它真正的实力。
-
-来，我们再次打开控制台，输入：
+这种**递归形式本质上就是利用虚拟机栈**对同一个方法的递归入栈实现的，如果我们写成非递归形式的前序遍历，应该是这样子的：
 
 ```
-javap -help
-```
-
-然后就能见识到`javap`的完全体了：
-
-```
-ZMac-C1WM:~ aobing$ javap -help
-用法: javap <options> <classes>
-其中, 可能的选项包括:
-  -help  --help  -?        输出此用法消息
-  -version                 版本信息
-  -v  -verbose             输出附加信息
-  -l                       输出行号和本地变量表
-  -public                  仅显示公共类和成员
-  -protected               显示受保护的/公共类和成员
-  -package                 显示程序包/受保护的/公共类
-                           和成员 (默认)
-  -p  -private             显示所有类和成员
-  -c                       对代码进行反汇编
-  -s                       输出内部类型签名
-  -sysinfo                 显示正在处理的类的
-                           系统信息 (路径, 大小, 日期, MD5 散列)
-  -constants               显示最终常量
-  -classpath <path>        指定查找用户类文件的位置
-  -cp <path>               指定查找用户类文件的位置
-  -bootclasspath <path>    覆盖引导类文件的位置
-```
-
-一般用的比较多的有两个：`-c`和`-v`。
-
-先看一下`javap -c`的效果：
-
-```
-ZMac-C1WM:~ aobing$ javap -c  Hello.class
-Compiled from "Hello.java"
-public class com.cc.demo.Hello {
-  int b;
-
-  float d;
-
-  public com.cc.demo.Hello();
-    Code:
-       0: aload_0
-       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
-       4: aload_0
-       5: bipush        100
-       7: putfield      #2                  // Field a:I
-      10: aload_0
-      11: bipush        101
-      13: putfield      #3                  // Field b:I
-      16: aload_0
-      17: bipush        100
-      19: putfield      #4                  // Field c:I
-      22: aload_0
-      23: ldc           #5                  // float 100.0f
-      25: putfield      #6                  // Field d:F
-      28: return
-
-  public static void main(java.lang.String[]);
-    Code:
-       0: bipush        102
-       2: istore_1
-       3: return
+public void preOrderTraverse(TreeNode root) {
+  // 自己声明一个栈
+  Stack<TreeNode> stack = new Stack<>();
+  TreeNode node = root;
+  while (node != null || !stack.empty()) {
+    if (node != null) {
+      System.out.print(node.val + "->");
+      stack.push(node);
+      node = node.left;
+    } else {
+      TreeNode tem = stack.pop();
+      node = tem.right;
+    }
+  }
 }
 ```
 
-而`javap -v`的效果是这样的：
+二叉树遍历的**非递归形式就是由我们自己把栈写好**，并实现出栈入栈的功能，跟递归方式调用的本质是相似的，只不过**递归操作中我们依赖虚拟机栈来执行入栈出栈**。
+
+总之，靠**栈**可以很好地表达方法间的这种层层调用的层级关系。
+
+当然，栈空间是有限的，如果只有入栈没有出栈，最后必然会出现空间不足，同时也就会报出经典的`StackOverflowError`（栈溢出错误），最常见的导致栈溢出的情况就是递归函数里忘了写终止条件。
+
+其次，多个线程的方法执行应当为独立且互不干扰的，因此**每一个线程都拥有自己独立的一个虚拟机栈**。
+
+这也导致了各个线程之间方法的执行速度并不能保持一致，有时A线程先执行完，有时B线程先执行完，究其原因就是因为虚拟机栈是线程私有，各自独立执行。
+
+谈完了**虚拟机栈**的整体情况，我们再来看看虚拟机栈中的**栈帧**。
+
+**栈帧是虚拟机栈中的基础元素，它随着方法的调用而创建，记录了被调用方法的运行需要的重要信息，并随着方法的结束而消亡。**
+
+那么你就要问了，**栈帧里到底包裹了些什么东西呀？**
+
+好的同学，等我把这个问题回答完，今天的知识你至少就懂了一半。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155351.png)
+
+# 3、栈帧的组成
+
+栈帧主要由以下几个部分组成：
+
+1. 局部变量表
+2. 操作数栈
+3. 动态连接
+4. 方法出口
+5. 其他信息
+
+## 3.1 局部变量表
+
+局部变量表（Local Variable Table）是一个用于存储**方法参数**和**方法内部定义的局部变量**的空间。
+
+**一个重要的特性是，在Java代码被编译为Class文件时，就已经确定了该方法所需要分配的局部变量表的最大容量。**
+
+也就是说，早在代码编译阶段，就已经把局部变量表需要分配的大小计算好了，并记录在Class文件中，例如：
 
 ```
-ZMac-C1WM:~ aobing$ javap -v Hello.class
-Classfile /Users/aobing/src/com/cc/demo/Hello.class
-  Last modified 2022-2-11; size 441 bytes
-  Compiled from "Hello.java"
-public class com.cc.demo.Hello
-  minor version: 0
-  major version: 52
-  flags: ACC_PUBLIC, ACC_SUPER
-Constant pool:
-   #1 = Methodref          #8.#31         // java/lang/Object."<init>":()V
-   #2 = Fieldref           #7.#32         // com/cc/demo/Hello.a:I
-   #3 = Fieldref           #7.#33         // com/cc/demo/Hello.b:I
-   #4 = Fieldref           #7.#34         // com/cc/demo/Hello.c:I
-   #5 = Float              100.0f
-   #6 = Fieldref           #7.#35         // com/cc/demo/Hello.d:F
-   #7 = Class              #36            // com/cc/demo/Hello
-   #8 = Class              #37            // java/lang/Object
-   #9 = Utf8               a
-  #10 = Utf8               I
-  #11 = Utf8               ConstantValue
-  #12 = Integer            100
-  #13 = Utf8               b
-  #14 = Utf8               c
-  #15 = Utf8               d
-  #16 = Utf8               F
-  #17 = Utf8               <init>
-  #18 = Utf8               ()V
-  #19 = Utf8               Code
-  #20 = Utf8               LineNumberTable
-  #21 = Utf8               LocalVariableTable
-  #22 = Utf8               this
-  #23 = Utf8               Lcom/cc/demo/Hello;
-  #24 = Utf8               main
-  #25 = Utf8               ([Ljava/lang/String;)V
-  #26 = Utf8               args
-  #27 = Utf8               [Ljava/lang/String;
-  #28 = Utf8               e
-  #29 = Utf8               SourceFile
-  #30 = Utf8               Hello.java
-  #31 = NameAndType        #17:#18        // "<init>":()V
-  #32 = NameAndType        #9:#10         // a:I
-  #33 = NameAndType        #13:#10        // b:I
-  #34 = NameAndType        #14:#10        // c:I
-  #35 = NameAndType        #15:#16        // d:F
-  #36 = Utf8               com/cc/demo/Hello
-  #37 = Utf8               java/lang/Object
-{
-  int b;
-    descriptor: I
-    flags:
-
-  float d;
-    descriptor: F
-    flags:
-
-  public com.cc.demo.Hello();
-    descriptor: ()V
-    flags: ACC_PUBLIC
-    Code:
-      stack=2, locals=1, args_size=1
-         0: aload_0
-         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
-         4: aload_0
-         5: bipush        100
-         7: putfield      #2                  // Field a:I
-        10: aload_0
-        11: bipush        101
-        13: putfield      #3                  // Field b:I
-        16: aload_0
-        17: bipush        100
-        19: putfield      #4                  // Field c:I
-        22: aload_0
-        23: ldc           #5                  // float 100.0f
-        25: putfield      #6                  // Field d:F
-        28: return
-      LineNumberTable:
-        line 2: 0
-        line 3: 4
-        line 4: 10
-        line 5: 16
-        line 6: 22
-      LocalVariableTable:
-        Start  Length  Slot  Name   Signature
-            0      29     0  this   Lcom/cc/demo/Hello;
-
-  public static void main(java.lang.String[]);
-    descriptor: ([Ljava/lang/String;)V
-    flags: ACC_PUBLIC, ACC_STATIC
-    Code:
-      stack=1, locals=2, args_size=1
-         0: bipush        102
-         2: istore_1
-         3: return
-      LineNumberTable:
-        line 8: 0
-        line 9: 3
-      LocalVariableTable:
-        Start  Length  Slot  Name   Signature
-            0       4     0  args   [Ljava/lang/String;
-            3       1     1     e   I
-}
-SourceFile: "Hello.java"
-```
-
-这下东西是不是就多了起来呢，我们简单的对比一下`javap -c`和`javap -v`这两个命令的区别：
-
-1. `javap -c`命令得到的信息包括类的字段及方法名称，还有一部分就是我们最常说的**字节码**，记录的是方法中的一系列操作指令。
-2. `javap -v`命令得到的信息较为丰富不仅包含了字段和方法的具体信息（当然也包含了字节码），还包括了LineNumberTable和Constant Pool等Class文件中的详细信息。
-3. 有时候这两个命令会与`-p`参数结合使用，例如：`javap -p -v`或者`javap -p -c`，目的是显示所有类和成员，把private修饰的部分也展示出来。
-
-> tips：如果想使用`javap -v`命令看到局部变量表`LocalVariableTable`，那么需要在Javac编译的时候就指定参数生成局部变量表，即在`javac`的时候加上参数`-g:vars`。
->
-> 如果直接使用`javac xx.java`最终生成的字节码中只有`LineNumberTable`信息，要用`javac -g:vars xx.java`命令来进行编译，再使用`javap -v`命令就可以看到局部变量表信息了。
-
-## 2.2 jclasslib Bytecode Viewer
-
-关于查看Class文件的工具，网上有很多功能相似的产品，例如国外团队写的Java-Class-Viewer工具以及国内大神写的开源的 Classpy、ClassViewer等工具，它们都是非常不错的Class文件分析工具，但是种种原因导致这些项目最终都停止更新，不再维护。
-
-我们主要还是抱着学习的目的，了解一下Class文件的结构。那么工具的易用性就很重要了，我们希望有一个简单易用的工具，不用折腾太多乱七八糟的配置，可以让我们秉持拿来主义，直接就能上手。
-
-这里推荐的是IDEA里的插件`jclasslib Bytecode Viewer`，直接在plugins里面安装一下就好啦。
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153107.png)
-
-这个插件还是不错的，免费，且简单易用，最重要的是可以直接在IDEA中对照着源码看字节码，使用感非常的nice~
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153121.png)
-
-对于这个工具的具体用法我们就不过多赘述，多点几下差不多就会了，重点还是后面的Class文件解析的部分。
-
-# 3. Class文件结构概述
-
-**Class文件中的数据项按顺序存储在class文件中，相邻的项之间没有任何间隔，这样可以使得class文件紧凑且便于解析。**
-
-前面提到的Class文件解析的工具基本也都是根据这一特性开发的。**因为Class文件中各个部分的顺序完全固定，只要知道各个部分占用空间的大小，按照顺序规范进行读取，就可以完成对Class文件的解析。**
-
-Class文件主要分为以下几个部分：
-
-1. 魔数（magic number）
-2. 版本号（minor&major version）
-3. 常量池（constant pool）
-4. 访问标记（access flag）
-5. 类索引（this class）
-6. 超类索引（super class）
-7. 接口表索引（interface）
-8. 字段表（field）
-9. 方法表（method）
-10. 属性表（attribute）
-
-我们先看看class文件的基本结构：
-
-```
-classFile{
-    u4 magic; 
-    u2 minor_version;
-    u2 major_version;
-    u2 constant_pool_count;
-    cp_info constant_pool[constant_pool_count-1];
-    u2 access_flags;
-    u2 this_class;
-    u2 super_class;
-    u2 interfaces_count;
-    u2 interfaces[interfaces_count];
-    u2 fields_count;
-    field_info fields[fields_count];
-    u2 methods_count;
-    method_info methods[methods_count];
-    u2 attributes_count;
-    attribute_info attributes[attributes_count];
-}
-```
-
-**Class文件中的基本类型是以占用字节数命名的简单数据结构**，例如，`u1`、`u2`、`u4`，`u8`三种数据结构分别表示占用1、2、4、8字节的无符号整数，还有一种稍复杂的数据结构则是表（table）。
-
-在上面的结构示例中，可以看到，除了`u1`、`u2`、`u4`之外的其他几个结构其实都是表，它们都以`_info`结尾，并以独特的名字标识自己的类型，例如方法表的类型就是`method_info`，常量池的类型就是`cp_info`（cp指的是constant pool）。
-
-Class文件中table类型的另一个特征是 **紧跟着表数据之前会使用一个前置的容量计数器来记录表中元素的个数**，这样便于明确表的范围。例如`constant_pool`就是紧跟着`constant_pool_count`出现的，`constant_pool_count`记录的是`constant_pool`的数据量大小。
-
-**这个记录是很重要的，因为Class文件中没有特定的开始和结束符号，只能通过这个count计数器，才知道对应的表占用多少空间，应该在什么位置结束。**
-
-## 3.1 魔数
-
-识别一个文件的类型，最简单的办法就是识别其文件后缀，比如我们看到一个以`.png`为后缀的文件，我们马上就判断这是一个png图片文件，知道需要用图片浏览器将其打开。
-
-但如果只通过文件名后缀来判断文件的真实格式，未免有些轻率了。比如，如果我们将`.png`文件的后缀改为`.class`，我们再用`javap`命令将其打开，会发生什么呢？
-
-```
-ZMac-C1WM:~ aobing$ ls
-Hello.class Hello.java pngTest.class
-ZMac-C1WM:~ aobing$ javap pngTest.class 
-错误: 读取pngTest.class时出现意外的文件结尾 
-```
-
-会由于格式错误无法打开。
-
-在读取Class文件时，最开始需要做的就是校验魔数是否正确，如果加载的Class文件不符合Java规范，那么就会抛出`java.lang.ClassFormatError`的异常。
-
-魔数用于对文件格式的二次校验，是判别文件格式的特殊标识，一般位于文件的开头位置，魔数本身没有什么限制，是可以由开发者自由定义的，只要保证不与其他文件格式的魔数重复。
-
-魔数不是Class文件的专属，其他各类文件格式一般都定义了属于自己的魔数，比如png文件的魔数是`89 50 4E 47`(十六进制)，而Java的Class文件对应的魔数则是`CA FE BA BE`(十六进制)。
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153131.png)
-
-还记得Java的图标吗，一杯咖啡，
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153137.png)
-
-而Class文件中的魔数`CA FE BA BE`，既是对Java语言本身logo的呼应，也是一种专属于Java的别样浪漫。
-
-> 至于为什么是CAFEBABE而不是CAFEBABY，那大概就是因为十六进制中没有Y这个字母吧。
-
-加载Class文件时，最先需要做的就是检查开头的四个字节，如果这四个字节不是CAFEBABE，则直接抛出错误，不用做后续的操作。
-
-## 3.2 版本号
-
-紧跟魔数的后面四个字节就是版本号啦，版本号由副版本号（minor_version）+主版本号（major_version）构成（副版本号在前），比如用JDK8环境编译好的Class文件中，版本号展示如下：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153144.png)
-
-十六进制的`00 00 00 34`对应的十进制数字就是52，也就是说JDK8所对应的Class版本就是52，更多的版本对应如下图所示：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153151.png)
-
-有时候运行代码提示JDK版本问题，就是在这一步检测到Class文件的版本号与当前的运行环境不一致。
-
-> 只有jdk 1.1版本的副版本号为`00 03`，后续的版本都是副版本为`00 00`，而且除1.1版本外，后续每次发布新版本时只变动主版本号，主版本号每次加1。
-
-## 3.3 常量池
-
-紧随版本号之后的部分是常量池，这一部分在Class文件中占比很高，也是Class文件中最复杂，最重要的部分之一。
-
-在Java代码中，如果涉及到一些数字的操作，需要用到各类的指令。对于占用字节比较少的整数类型，这些简单数字的操作被枚举成了具体的指令，嵌入到了字节码中（后续会进行讲解）。
-
-**但对于一些比较大的数字（主要是那些无法用4个字节表示的类型，例如float、double等类型）**，则会被记录在常量池中，当需要使用这些操作数的时候，会根据索引值到常量池中来查取。
-
-Class文件中，**常量池是以表的形式存在的，因此它的前置还有一个用以表示常量池表大小的计数器**，常量池整体的结构可以表示为：
-
-```
-{
-    u2 constant_pool_count;
-    cp_info constant_pool[constant_pool_count-1];
-}
-```
-
-`constant_pool`的索引从1开始，但count计数的时候会把0的位置也记录数上，也就是说，**如果`constant_pool_count=5`，那么`constant_pool`数组的有效索引为[1]-[4]，而不是[0]-[4]。**
-
-**另外值得一提的一点是，long类型与double类型的数据在cp_info中会占用两个索引的位置，因此`constant_pool`中的元素个数可能比`cp_info_count`的索引指示地要少。**
-
-`constant_pool`中每一个`cp_info`元素又可分为两个部分：
-
-1. tag：通常为1个字节，用于表示该常量项的类型；
-2. info：该常量项的具体内容，根据不同类型的实际数据占用不同的字节长度；
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153159.png)
-
-目前Java中总共支持14种tag，命名的规则是：`CONSTANT_XXX_info`，其中XXX是具体的常量类型，可以是Integer、Float、String等。具体如下：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153206.png)
-
-这里面东西比较多，我们挑一个有代表性的来讲讲，我们还是以开头那段代码为例：
-
-```
-package com.cc.demo;
 public class Hello {
-    private final int a = 100;
-    int b = 101;
-    private final int c = 100;
-    float d = 100f;
     public static void main(String[] args) {
-        int e = 102;
+        for (int i=0;i<3;i++){
+            System.out.printf(i+"");
+        }
     }
 }
 ```
 
-编译好之后，我们用`javap -p -v`命令解析其对应的Class文件，同时在IDEA中将jclasslib打开。`javap -p -v Hello.class`的结果如下（加入`-p`参数是为了将`private`修饰的字段解析出来）：
-
-由于下面这个内容还会用到很多次，我们暂且将其命名为 **例子1**：
+这个类的main方法，通过`javap`之后可以得到其中的局部变量表：
 
 ```
-public class com.cc.demo.Hello
-  minor version: 0
-  major version: 52
-  flags: ACC_PUBLIC, ACC_SUPER
-Constant pool:
-   #1 = Methodref          #8.#31         // java/lang/Object."<init>":()V
-   #2 = Fieldref           #7.#32         // com/cc/demo/Hello.a:I
-   #3 = Fieldref           #7.#33         // com/cc/demo/Hello.b:I
-   #4 = Fieldref           #7.#34         // com/cc/demo/Hello.c:I
-   #5 = Float              100.0f
-   #6 = Fieldref           #7.#35         // com/cc/demo/Hello.d:F
-   #7 = Class              #36            // com/cc/demo/Hello
-   #8 = Class              #37            // java/lang/Object
-   #9 = Utf8               a
-  #10 = Utf8               I
-  #11 = Utf8               ConstantValue
-  #12 = Integer            100
-  #13 = Utf8               b
-  #14 = Utf8               c
-  #15 = Utf8               d
-  #16 = Utf8               F
-  #17 = Utf8               <init>
-  #18 = Utf8               ()V
-  #19 = Utf8               Code
-  #20 = Utf8               LineNumberTable
-  #21 = Utf8               LocalVariableTable
-  #22 = Utf8               this
-  #23 = Utf8               Lcom/cc/demo/Hello;
-  #24 = Utf8               main
-  #25 = Utf8               ([Ljava/lang/String;)V
-  #26 = Utf8               args
-  #27 = Utf8               [Ljava/lang/String;
-  #28 = Utf8               e
-  #29 = Utf8               SourceFile
-  #30 = Utf8               Hello.java
-  #31 = NameAndType        #17:#18        // "<init>":()V
-  #32 = NameAndType        #9:#10         // a:I
-  #33 = NameAndType        #13:#10        // b:I
-  #34 = NameAndType        #14:#10        // c:I
-  #35 = NameAndType        #15:#16        // d:F
-  #36 = Utf8               com/cc/demo/Hello
-  #37 = Utf8               java/lang/Object
-{
-  private final int a;
-    descriptor: I
-    flags: ACC_PRIVATE, ACC_FINAL
-    ConstantValue: int 100
-
-  int b;
-    descriptor: I
-    flags:
-
-  private final int c;
-    descriptor: I
-    flags: ACC_PRIVATE, ACC_FINAL
-    ConstantValue: int 100
-
-  float d;
-    descriptor: F
-    flags:
-
-  public com.cc.demo.Hello();
-    descriptor: ()V
-    flags: ACC_PUBLIC
-    Code:
-      stack=2, locals=1, args_size=1
-         0: aload_0
-         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
-         4: aload_0
-         5: bipush        100
-         7: putfield      #2                  // Field a:I
-        10: aload_0
-        11: bipush        101
-        13: putfield      #3                  // Field b:I
-        16: aload_0
-        17: bipush        100
-        19: putfield      #4                  // Field c:I
-        22: aload_0
-        23: ldc           #5                  // float 100.0f
-        25: putfield      #6                  // Field d:F
-        28: return
-      LineNumberTable:
-        line 2: 0
-        line 3: 4
-        line 4: 10
-        line 5: 16
-        line 6: 22
-      LocalVariableTable:
+LocalVariableTable:
         Start  Length  Slot  Name   Signature
-            0      29     0  this   Lcom/cc/demo/Hello;
+            2      41     1     i   I
+            0      44     0  args   [Ljava/lang/String;
+```
 
-  public static void main(java.lang.String[]);
-    descriptor: ([Ljava/lang/String;)V
-    flags: ACC_PUBLIC, ACC_STATIC
-    Code:
-      stack=1, locals=2, args_size=1
-         0: bipush        102
-         2: istore_1
-         3: return
-      LineNumberTable:
-        line 8: 0
-        line 9: 3
-      LocalVariableTable:
+这个意思就是告诉你，这个方法会产生两个局部变量，`Slot`代表他们在局部变量表中的下标。
+
+难道方法里定义了多少个局部变量，局部变量表就会分配多少个Slot坑位吗？
+
+不不不，编译器精明地很，它会采取一种称为`Slot复用`的方法来节省空间，举个例子，我们为前面的方法再增加一个for循环：
+
+```
+public class Hello {
+    public static void main(String[] args) {
+        for (int i=0;i<3;i++){
+            System.out.printf(i+"");
+        }
+        for (int j=0;j<3;j++){
+            System.out.printf(j+"");
+        }
+    }
+}
+```
+
+然后会得到如下局部变量表：
+
+```
+LocalVariableTable:
         Start  Length  Slot  Name   Signature
-            0       4     0  args   [Ljava/lang/String;
-            3       1     1     e   I
-}
-SourceFile: "Hello.java"
+            2      41     1     i   I
+           45      41     1     j   I
+            0      87     0  args   [Ljava/lang/String;
 ```
 
-可以看到，在常量池Constant Pool中，只有一个Integer类型的常量，也就是`#12 = Integer 100`。
+虽然还是三个变量，但是`i`和`j`的`Slot`是同一个，也就是说，**他们共用了同一个下标，在局部变量表中占的是同一个坑位**。
 
-前面说了，int类型占用的空间不超过4字节，按理来说是不会加入到常量池中的，而且在本类中`a`,`b`,`c`三个变量都是整型的，为什么只有值100被加入到了常量池，变量b的值101怎么没有加入到常量池中？
+至于原因呢，相信聪明的你已经看出来了，跟局部变量的作用域有关系。
 
-**这是由于当整型变量以final修饰时，它被声明为一个常量，此时才会加入常量池。**
+变量`i`作用域是第一个for循环的内部，而当变量`j`创建时，`i`的生命周期就已经结束了。因此`j`可以复用`i`的`Slot`将其覆盖掉，以此来节省空间。
 
-而未被final修饰的整型变量（本例中的变量b = 101），其值101就不会被加入到常量池中。
+所以，虽然看起来创建了三个局部变量，但其实只需要分配两个变量的空间。
 
-但是像float和double这种类型，无论是否声明为final，都会被加入到常量池中。如本例中的`#5 = Float 100.0f`，就是变量`d`的值被加入到常量池中。
+## 3.2 操作数栈
 
-> 深层的原因我们在后面讲到第8部分字段表时，会详细解答。
+栈帧中的第二个重要部分是操作数栈。
 
-其次同一个常量值不会被重复保存在常量池，例如本例子中的`a`和`c`都被final修饰，值都是100，当100这个值被加到常量池中后，变量`a`会指向该常量池的索引。
+等等，这怎么又来了个栈，搁这套娃呢？？？
 
-**然后变量`c`也被声明为常量的100，但此时，并不会将100的值在常量池中再保存一次，而是复用已经保存的常量值100，也就是说`a`和`c`指向常量池中的同一个索引位置。**
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155357.png)
 
-这一点我们可以从jclasslib得到答案：
+没办法呀，栈这玩意实在太好用了，首先栈的**基本操作非常简单**，只有入栈和出栈两种，这个优势可以保证每一条JVM的指令都代码紧凑且体积小；其次**栈用来求值**也是非常经典的用法，简单又方便喔。
 
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153217.png)
-
-可以看到`a`和`c`的常量值对象都指向`cp_info #12`，证明它们复用了同一个常量值。
-
-我们根据已有信息来一次反推，十进制的100对应的是十六进制的64，这点我们从jclasslib中也可以得到一致的信息。
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153224.png)
-
-我们前面讲过，`CONSTANT_Integer_info`的`tag`是3，然后接的是四个字节的常量信息，表示用十六进制表示的常量值100，占用四个字节的空间，也就是`00 00 00 64`。
-
-因此我们期待以十六进制方式打开Class文件后能够得到`final int a = 100`以`03 00 00 00 64`这样的内容保存着（变量名可任意）。
-
-事实是怎么样的呢，如下：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153233.png)
-
-没错，这就是Class文件将100这个值保存在常量池中的样子。
-
-你学会了吗。
-
-## 3.4 访问标记
-
-等到常量池的部分结束后，紧随其后的就是访问标记了。访问标记其实很好理解，就是类上的修饰符，如final、abstract等。
-
-这个部分用两个字节的空间来保存，其实这里十六进制值存储的也是约定好的枚举值，不同的枚举值对应不同的访问标记名：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153246.png)
-
-在上面这个例子1中，访问标记就是`00 21`：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153252.png)
-
-`00 21`对应的就是`ACC_PUBLIC`以及`ACC_SUPER`，意味着这个类是public修饰的类，而`ACC_SUPER`则代表该类有继承关系。这也很好理解，在Java中，所有的类都是Object类的子类嘛。
-
-## 3.5 类索引（this_class）
-
-顾名思义，**类索引保存的是一个与类相关的索引，既然有索引那么肯定有数据，那么它指向的数据是哪呢，就是前面提到的常量池**。
-
-在例1中，类索引紧跟访问标记`00 21`之后，也就是对应的`00 07`，指向常量池中索引为7的位置：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153304.png)
-
-我们找到常量池中索引为7的位置，发现这个位置对应的其实是一个`CONSTANT_Class_info`，代表这是一个类的信息常量：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153314.png)
-
-类对应的类名是`cp_info #36`，我们继续找下去，可以看到，this_class最终指向的是一个字符串字面量，也就是本类的类名：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153320.png)
-
-## 3.6 超类索引（super_name）
-
-与类索引的查询方法一致，在例子1中，对应的超类索引十六进制值为`00 08`：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153336.png)
-
-同样到常量池中取索引，得到最终的超类名为：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153349.png)
-
-所有的类都是Object类的子类，在这一步得到了验证。
-
-## 3.7 接口索引（interface）
-
-与前两个索引的查询方法一致，不过这里有一些特殊点，在例子1中，由于该类没有实现任何接口，所以接口表索引为`00 00`：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153354.png)
-
-还记得前面所说的**常量池的索引从1开始，而0号位是无效位**吗？
-
-将0号位置设为无效就是为了应对这种情况。
-
-**由于常量池中没有0号索引位，因此读取到`00 00`这样的索引时可知，此索引表示的是 不存在该信息。**
-
-## 3.8 字段表
-
-接口索引之后紧跟的是字段表，字段表很好理解啦，记录的就是类中的字段信息。前面已经说过，Class文件中的表的结构，都是以 **表大小+表内容** 来表示的，字段表当然也不例外，它的表示为：
-
-```
-{
-    u2 fields_count;
-    field_info fields[fields_count];
-}
-```
-
-`fields_count`表示的是`fields`中的`field_info`数量。
-
-字段内容`field_info`内部又可以细分为：
-
-```
-{
-    u2 access_flags;
-    u2 name_index;
-    u2 descriptor_index;
-    u2 attributes_count;
-    attribute_info attributes[attributes_count];
-}
-```
-
-我们来简单介绍一下这几个部分的内容：
-
-### 3.8.1 access_flags
-
-访问标记。这跟类的访问标记相似，只不过字段表中的访问标记存储的是字段上的public、private、protected等信息，当然也包括static、final等声明信息，同样是以枚举的方式记录：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153411.png)
-
-### 3.8.2 name_index
-
-字段名索引。跟3.5中的类索引相似，`name_index`记录的是常量池中的索引，最终可以通过`name_index`找到一个字符串常量名，也就是字段名。
-
-比如，在例子1中，第一个字段的`name_index`如下：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153417.png)
-
-再到常量池索引为`#9`的位置查找，最终得到的字段名就是`a`啦。
-
-### 3.8.3 descriptor_index
-
-字段类型索引。
-
-跟字段名索引的功能类似，指向常量池中的一个字符串常量，但是为了节省空间，字段的类型是用简写方式表示的，例如：
-
-1. 基础类型，byte、int、char、float等这些简单类型使用一个大写字符来表示，B对应byte类型，I对应的是Integer，**大部分类型对应都是自己本身的首字母大写，除了有两个特殊的——J对应的是long类型，Z表示boolean类型**。
-2. **引用类型使用L+全类名+；的方式来表示**，为了防止多个连续的引用类型描述符出现混淆，引用类型描述符最后都加了一个分号";"作为结束，比如字符串类型String的描述符为`Ljava/lang/String;`。
-3. **数组类型用"["来表示**，如字符串数组String[]的描述符为“`[Ljava/lang/String;`”，同时该符号也可表示多维数组，如`int[][]`就被表示为`[[I`。
-
-在例子1中，变量a的`descriptor_index`为`00 0A`，也就是指向索引`#10`的位置，最终找到变量a的类型为`I`，也就是Integer。
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153427.png)
-
-### 3.8.4 attributes_count与attributes（属性表）
-
-`attributes_count`表示的是字段属性项个数，而`attributes`则是字段属性项集合。
-
-`attributes`中由各类的`attribute_info`组成，`attribute_info`记录的是具体的属性信息，比较常见的有`ConstantValue`属性，表示这个字段是一个常量；还有`RuntimeVisibleAnnotations`属性，表示该字段上标注有运行时注解，比如Spring相关注解。
-
-> 关于运行时注解与编译时注解我们在编译过程中已经讨论过了，还有疑惑的同学可以回过去复习一下。
-
-可以发现，字段表其实是一个**嵌套式**的表结构，`field_info`表内部嵌套一个`attributes`。
-
-我们回到Class文件中看看他们是怎么表示的，在例子1`javap`结果中间的部分，在`#37`之后的一行，有关于变量`a`的描述：
-
-```
-private final int a;
-    descriptor: I
-    flags: ACC_PRIVATE, ACC_FINAL
-    ConstantValue: int 100
-```
-
-这里展示的就是变量`a`对应的`访问标记`、`字段类型`以及`属性表`的内容啦。
-
-在jclasslib中就看得更清楚了：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153434.png)
-
-这就是字段表中保存的关于变量a的相关信息了。
-
-**等等，这里有一个重点！！**
-
-我们在**3.3 常量池**的部分中抛出了一个问题，**为什么int类型字段值只有声明为final后才会被保存到常量池中？**
-
-这里就能得到答案。
-
-因为声明为final的字段，需要在`attribute_info`中存储`ConstantValue`属性来标识该字段是一个常量。而`ConstantValue`又需要记录下该字段的值。
-
-这个值保存在哪个地方最适合呢，当然是常量池啦。
-
-我们使用jclasslib查看就更直观了，常量值的索引指向`cp_info #12`，而常量池中`#12`位置存储的正是值`100`。
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153441.png)
-
-> 未被final声明的int类型，其值不会保存到常量池中，而是在使用时直接嵌入到字节码中，如本例子中的变量b：
+> 也有一种基于寄存器的体系结构，将局部变量表与操作数栈的功能组合在一起，关于这两种体系优劣势的详细讨论可以移步至R大的博客：https://www.iteye.com/blog/rednaxelafx-492667
 >
-> ![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153447.png)
+> 至于用栈来求值这种用法，大家在《数据结构》课上学栈这一结构的时候应该都接触过了，这里不多展开。如果没有印象了，建议看看Leetcode上的这一题：https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
 
-## 3.9 方法表
+总之，情况就是这么个情况，**虚拟机栈的每一个栈帧里都包含着一个操作数栈**，作用是**保存求值的中间结果和调用别的方法的参数**等。
 
-方法表的作用和字段表很类似，用于记录类中定义的方法。
+## 3.3 动态连接
 
-当然，方法表前也是有一个count记录的，具体的结构如下：
+**动态连接**这个名词在全网的JVM中文资料中解释得非常混乱，在你基础没有打牢之前不建议你深入去细究，脑子会乱掉的。
+
+我这里会给大家一个非常通俗易懂的解释，了解即可。
+
+首先，栈帧中的这个动态连接，英文是**Dynamic Linking**，Linking在这里是作为名词存在的，跟前面的表、栈是同一个层次的东西。
+
+这个连接说白了就是**栈帧的当前方法指向运行时常量池的一个引用**。
+
+为什么需要有这个引用呢？
+
+前面说了，Class文件中关键信息都保存在方法区中，所以**方法执行的时候生成的栈帧得知道自己执行的是哪个方法**，靠的就是这个动态连接直接引用了方法区中该方法的实际内存位置，然后再**根据这个引用，读取其中的字节码指令**。
+
+至于"动态"二字，牵扯到的就是Java的**继承和多态**的机制，有的类继承了其他的类并重写了父类中的方法，因此在运行时，需要"动态地"识别应该要连接的实际的类、以及需要执行的具体的方法是哪一个。
+
+## 3.4 方法出口
+
+当一个方法开始执行，只有两种方式退出这个方法，**第一种方式是正常返回**，即遇到了`return`语句，**另一种方式则是在执行中遇到了异常**，需要向上抛出。
+
+无论是那种形式的返回，在此方法退出之后，**虚拟机栈都应该退回到该方法被上层方法调用时的位置**。
+
+**栈帧中的方法出口记录的就是被调用的方法退出后应该回到上层方法的什么位置。**
+
+------
+
+好了，到这里为止，栈帧中的内容就介绍结束了，接下来我们用一个简单的例子来了解字节码指令，以及执行执行时JVM各区域的运行过程。
+
+# 4、实例：++i与i++的字节码实例
 
 ```
-{
-  u2    methods_count;
-  method_info    methods[methods_count];
+public class Hello {
+    public static int a = 0;
+    public static void main(String[] args) {
+        int b = 0;
+        b = b++;
+        System.out.println(b);
+        b = ++b;
+        System.out.println(b);
+        a = a++;
+        System.out.println(a);
+       a = ++a;
+        System.out.println(a);
+    }
 }
 ```
 
-`method_info`也是一个嵌套结构：
+这段程序的输出会是是这样的：
 
 ```
-{
-  u2    access_flags;
-  u2    name_index;
-  u2    descriptor_index;
-  u2    attributes_count;
-  attribute_info  attributes[attributes_count];
-}
+0
+1
+0
+1
 ```
 
-前四个部分就不用介绍了，跟字段表中的信息基本一致，描述的是一些方法声明信息。
+这是初学Java时一道经典的误导题，大家可能已经知其然，一眼就能看出正确的结果，可对于最底层的原理却未必知其所以然。
 
-**我们直接来聊聊方法表中的这个`attribute_info`，也就是方法中的属性表。**
+`b=b++`执行完后变量`b`并没有发生变化，只有在`b=++b`时变量`b`才自增成功。
 
-字段中的属性表存储了字段的常量值等信息，而通常来说，方法的定义是要比字段定义稍微复杂一些的，比如方法有方法体，有声明的抛出异常等，而这些信息，就都存储在方法表里的`attribute_info`里。因此方法中可用的`attribute_info`要更多。
+这里其实涉及到自增操作在字节码层面的实现问题。
 
-例如方法体对应的属性是`Code`，而异常信息对应的属性名为`Exceptions`，这都是字段中不存在的属性。
+我们先来看看这一段代码对应的字节码是怎样的，使用`jclasslib`来查看`Hello`类的`main`方法中的`Code`属性：
 
-在方法表的属性表中，最为重要的就是`Code`属性，例如例子1中的main方法，其`Code`属性在字节码中是这样表示的：
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155409.png)
 
-```
-Code:
-      stack=1, locals=2, args_size=1
-         0: bipush        102
-         2: istore_1
-         3: return
-      LineNumberTable:
-        line 8: 0
-        line 9: 3
-      LocalVariableTable:
-        Start  Length  Slot  Name   Signature
-            0       4     0  args   [Ljava/lang/String;
-            3       1     1     e   I
-```
-
-其中最重要的部分，在这：
-
-![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/153504.png)
-
-这一部分就是我们俗称的 **字节码**。
-
-开篇我们就强调了，**字节码是Class文件的一部分**，但它究竟在什么位置，现在就有了答案：
-
-**字节码记录在Class文件的方法表中的attribute_info的Code属性里**。
-
-> 这里暂时不展开讲Code部分，各位同学不要心急，后续会单独写一篇字节码相关的文章，保证给大家安排地明明白白。
-
-至于stack（操作数栈），locals（局部变量），LineNumberTable（行号表）和LocalVariableTable（局部变量表），都是JVM运行时需要相关的信息，我们可以暂时不用纠结，后续也会接触到的。
-
-**现在大家只要记住字节码其实保存在方法表中就可以了。**
-
-## 3.10 属性表
-
-是不是很眼熟？**属性表在前面已经出现过了，在字段表中、方法表中，都内嵌了一个属性表。**
-
-**而这里的属性表，记录的是该类的类属性**（注意不是类字段），它的结构如下：
+将Code中的信息粘贴出来：
 
 ```
-{
-  u2    attributes_count;
-  attribute_info attributes[attributes_count];
-}
+ 0 iconst_0
+ 1 istore_1
+ 2 iload_1
+ 3 iinc 1 by 1
+ 6 istore_1
+ 7 getstatic #2 <java/lang/System.out : Ljava/io/PrintStream;>
+10 iload_1
+11 invokevirtual #3 <java/io/PrintStream.println : (I)V>
+14 iinc 1 by 1
+17 iload_1
+18 istore_1
+19 getstatic #2 <java/lang/System.out : Ljava/io/PrintStream;>
+22 iload_1
+23 invokevirtual #3 <java/io/PrintStream.println : (I)V>
+26 getstatic #4 <com/cc/demo/Hello.a : I>
+29 dup
+30 iconst_1
+31 iadd
+32 putstatic #4 <com/cc/demo/Hello.a : I>
+35 putstatic #4 <com/cc/demo/Hello.a : I>
+38 getstatic #2 <java/lang/System.out : Ljava/io/PrintStream;>
+41 getstatic #4 <com/cc/demo/Hello.a : I>
+44 invokevirtual #3 <java/io/PrintStream.println : (I)V>
+47 getstatic #4 <com/cc/demo/Hello.a : I>
+50 iconst_1
+51 iadd
+52 dup
+53 putstatic #4 <com/cc/demo/Hello.a : I>
+56 putstatic #4 <com/cc/demo/Hello.a : I>
+59 getstatic #2 <java/lang/System.out : Ljava/io/PrintStream;>
+62 getstatic #4 <com/cc/demo/Hello.a : I>
+65 invokevirtual #3 <java/io/PrintStream.println : (I)V>
+68 return
 ```
 
-`attribute_info`的具体结构又可细分：
+Emmm....看起来有点密密麻麻，不知道该从哪看起。
+
+其实阅读字节码指令是有技巧的，字节码和源码的对应关系已经记录在了字节码中，也就是`Code`属性中的`LineNumberTable`，这里记录的是**源码的行号和字节码行号的对应关系**。
+
+如图，右侧的**起始PC指的是字节码的起始行号**，**行号则是字节码对应的源码行号**。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155412.png)
+
+将这个例子中的源码和字节码对应起来的效果如图所示：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155421.png)
+
+这么一对应，是不是就清晰很多了？
+
+掌握了这个技巧之后我们就可以开始分析整体的流程和细节了。
+
+## 4.1 静态变量赋值
+
+首先来捋一捋，当Hello类加载到JVM之后发生了什么，按我们前面说的，加载完成之后，虚拟机栈需要进行方法入栈，而众所周知，main方法是执行的入口，所以main方法最先入栈。
+
+但是，是这样的吗？
+
+别忘记了这一行代码：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155429.png)
+
+静态变量的赋值需要在main方法之前执行，前面已经提到了，静态变量的赋值操作被封装在<clinit>方法中。
+
+因此，**<clinit>方法需要先于main方法入栈执行**，在本例中，<clinit>方法长这样：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155433.png)
+
+当然，<clinit>方法的LineNumberTable也记录了字节码跟源码的对应关系，只不过在这里对应源码只有一行：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155438.png)
+
+因此`public static int a = 0;`这一行源代码就对应了三行的字节码：
 
 ```
-{
-  u2 attribute_name_index;
-  u4 attribute_length;
-  u1 info[attribute_length];
-}
+0 iconst_0
+1 putstatic #4 <com/cc/demo/Hello.a : I>
+4 return
 ```
 
-所以说啊，**类中有一个属性表，方法中有一个属性表，字段中还是有一个属性表**，但它们记录的东西不一样：
+简直没有比这更适合作为字节码教学入门素材的了！！
 
-- **字段表中的属性表**记录的是字段是否为常量、字段上是否有注解等信息。
-- **方法表中的属性表**记录了方法上是否有注解、方法的异常信息声明、字节码等信息。
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155443.png)
 
-同样的，不同位置的属性表可供使用的属性也不一样，比如`ConstantValue`不能用在类和方法上，`Exceptions`属性不能用在字段上。
+接下来就可以开始愉快地手撕字节码了。
 
-那Class文件最后的这个属性表记录的跟类的相关信息具体有哪些呢？
+第一句`iconst_0`，在官方的JVM规范中是这么解释的：“Push the int constant <*i*>  onto the operand stack”，也就是说**iconst操作是把一个int类型的常量数据压入到操作数栈的栈顶**。
 
-只说几个常见的：
+这个指令开头的字母表示的是类型，在本例中`i`代表int。我们可以举一反三，当然还会有`lconst`代表把long类型的常量入栈到栈顶，有`fconst`指令表示把float类型的常量推到栈顶等等等等。
 
-1. SourceFile：类的源文件名称。
-2. RuntimeVisibleAnnotations：类上标记的注解信息。
-3. InnerClasses：记录类中的内部类。
+这个指令结尾的数字就是需要入栈的值了~
 
-属性表的规则相比于其他的部分较为松散一些，第一，属性表中的属性并没有顺序要求，第二，不同的属性内部的具体的info内容结构也是各异的，**需要按照虚拟机的规范事先约定好，虚拟机读取到对应的属性名称后，再按规范去解析其中的属性信息**。
+恭喜你，看完上面这段话，你至少已经学会了n种字节码指令了。
 
-我们举一个例子，在方法表的属性表中（有点像绕口令哈哈），可能会存在`LineNumberTable`和`Exceptions`两种属性，虽然它们的开头部分是一致的：**一个占用两字节的`attribute_name_index`，以及一个占用四字节的`attribute_length`。**
+不就是排列组合嘛，so easy！
 
-但虚拟机根据读取到`attribute_name_index`进行的后续解析步骤是不同的，比如对于`Exceptions`，后续的信息为`number_of_exceptions`与`exception_index_table`，而`LineNumberTable`后续的信息为`line_number_table_length`及`line_number_table`，它们的格式和占用空间的大小都是不同的，只有依赖事先定义好的规范，才能将对应属性的正确信息解析出来。
+再来看第二句，`putstatic #4`，光看字面意思就能很容易的猜出它的作用，这个指令的含义是**：当前操作数栈顶出栈，并给静态字段赋值**。
 
-> tips: 这个表格比较复杂，建议有相关需求和兴趣的同学们直接查看官方的Java虚拟机规范文档：https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7
+把刚才放到操作数栈顶的`0`拿出来，赋值给常量池中`#4`位置字面量表示的静态变量，这里可以看到`#4`位置的字面量就是`<com/cc/demo/Hello.a : I>`。
 
-# 4.总结
+所以，这第二行字节码，本质上是一个赋值操作，将`0`这个值赋给了静态变量`a`。
 
-Class文件中记录了很多关键的信息，了解Class文件的结构能够帮助我们更深入地理解Java运行原理。
+> 静态变量存储在堆中该类对应的Class对象实例中，也就是我们在反射机制中用对应类名拿到的那个Class对象实例。
 
-我们在最后对Class文件中的结构做一个简单的分类，大家一条一条看下去，也跟着思考一下，如果不保存这一信息会怎么样，会不会影响代码的运行？这个信息具体保存在Class文件的哪一部分？
+最后一行是一个`return`，这个没啥好说的。
 
-Class文件结构分类：
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155449.gif)
 
-1. 结构信息
+好了，这就是本例中的<clinit>方法中的全部了，并不难吧。
 
-2. - Class文件格式版本号
-   - 各部分的数量及所占空间大小
+**当<clinit>方法执行完出栈后，main方法入栈，开始执行main方法Code属性中的字节码指令。**
 
-3. 元数据（对应Java源代码中“声明”和“常量”信息）
+为了方便讲解，接下来我会逐行将源码与其对应的字节码贴在一起。
 
-4. - 类 / 继承的超类 / 实现接口的声明信息
-   - 域 / 方法 的声明信息
-   - 常量池
-   - 运行期注解
+## 4.2 局部变量赋值
 
-5. 方法信息（对应Java源代码中“语句”与“表达式”信息）
+首先是源码中的第六行 ，也就是main函数的第一句：
 
-6. - 字节码
-   - 异常处理器表
-   - 操作数栈 与 局部变量区 的大小
-   - 符号信息（如LineNumberTable、LocalVariableTable）
+```
+//Source code
+int b = 0;
 
-我是敖丙，你知道的越多，你不知道的越多，下期见！
+//Byte code
+ 0 iconst_0
+ 1 istore_1
+```
+
+这一句源码对应了两行字节码。
+
+其中，`iconst_0`这个在前面已经讲过了，将int类型的常量从栈顶压入，由于此时操作数栈为空，所以`0`被压入后理所当然地既是栈顶，也是栈底。
+
+然后是`istore_1`命令，这个跟`iconst_0`的结构很像，**以一个类型缩写开头，以一个数字结尾**，那么我们只要弄清楚`store`的含义就行了，`store`表示**将栈顶的对应类型元素出栈，并保存到局部变量表指定位置中**。
+
+由于此时的栈顶元素就是刚才压入的int类型的`0`，所以我们要存储到局部变量表中的就是这个`0`。
+
+那么问题来了，这个值需要放到局部变量表中的哪个位置呢？
+
+在`iconst_0`命令中，末尾的数字代表需要入栈的常量，但在`istore_1`命令中，操作数是从操作数栈中取出的，是不用声明的，那`istore_1`命令末尾这个数字的用途是什么呢？
+
+前面说了，`store`表示将栈顶的对应类型元素保存到局部变量表**指定位置**中。
+
+因此`iconst_0`指令末尾这个数字代表就是**指定位置**啦，也就是**局部变量表的下标**。
+
+从`LocalVariableTable`中可以看出，下标为1的位置中存储的就是局部变量b。
+
+> 下标0位置存储的是方法的入参。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155501.png)
+
+总之，`istore_1`这个命令就意味着栈顶的int元素出栈，并保存到局部变量表下标为1的位置中。
+
+> 同样的，`stroe`这个命令也可以与各种类型缩写的开头组合成不同的命令，像什么`lstroe`、`fstore`等等。
+
+ok，这又是一个经典的声明和赋值操作。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155505.gif)
+
+## 4.3 局部变量自增
+
+### 4.3.1 i++过程
+
+我们继续往下看，源码第七行和它对应的字节码：
+
+```
+//Source code
+b = b++;
+
+//Byte code
+ 2 iload_1
+ 3 iinc 1 by 1
+ 6 istore_1
+```
+
+首先是`iload_1`命令，这个命令是与`istore_1`命令对应的反向命令。
+
+`store`不是从操作数栈栈顶取数存到局部变量表中嘛，那么`load`要做的事情恰恰相反，它做的是**从局部变量表指定位置中取数值，并压入到操作数栈的栈顶**。
+
+那么`iload_1`详细来说就是：**从局部变量表的位置1中取出int类型的值，并压入操作数栈**。
+
+但是，这里的取值操作其实是一个“拷贝”操作：**从局部变量表中取出一个数，其实是将该值复制一份，然后压入操作数栈，而局部变量表中的数值还保存着，没有消失**。
+
+然后是一个`iinc 1 by 1`指令，这是一个**双参数指令**，主要的功能是**将局部变量表中的值自增一个常量值**。
+
+`iinc`指令的**第一个参数值的含义是局部变量表下标**，**第二个参数值需要增加的常量值**。
+
+因此**`iinc 1 by 1`就表示局部变量表中下标为1位置的值增加1。**
+
+再来看第三条指令`istore_1`，这个很熟悉了，操作数栈栈顶元素出栈，存到局部变量表中下标为1的位置。
+
+等等，是不是有什么奇怪的事情发生了。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155508.png)
+
+**`iinc 1 by 1`就表示局部变量表中下标为1位置的值由0变成了1，但是`istore_1`把一开始从局部变量表下标1复制到操作数栈的0值又赋值到了下标位置1。**
+
+因此无论中间局部变量表中的对应元素做了什么操作，到了这一步都直接白费功夫，相当于是脱裤子放屁了。
+
+来个动图，看得更清晰：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155511.gif)局部变量b++流程
+
+因此`b = b++`从字节码上来看，自增后又被初始值覆盖了，最终自增失败。
+
+继续看下一句：
+
+```
+//Source code
+System.out.println(b);
+
+//Byte code
+ 7 getstatic #2 <java/lang/System.out : Ljava/io/PrintStream;>
+10 iload_1
+11 invokevirtual #3 <java/io/PrintStream.println : (I)V>
+```
+
+这一句是与控制台打印有关的字节码，与今天的主题联系不大，稍微过一下即可。
+
+`getstatic #2`是**获取常量池中索引为`#2`的字面量对应的静态元素**。
+
+`iload_1` 从局部变量表中索引为1的位置取数值，并压入到操作数栈的栈顶，这里取的就是变量`b`的值啦。
+
+然后最后一句是`invokevirtual #3`，**invoke这个单词我们在代理模式中也经常见到，是调用的意思**，因此`invokevirtual #3`代表的就是 **调用常量池索引为3的字面量对应的方法**，这里的对应方法就是`java/io/PrintStream.println`，
+
+最终，将变量`b`的值打印出来。
+
+### 4.3.2 ++i过程
+
+再来看看`++b`操作：
+
+```
+//Source code
+b = ++b;
+
+//Byte code
+14 iinc 1 by 1
+17 iload_1
+18 istore_1
+```
+
+这里的三行字节码与前面讲解的`b=b++`中的字节码完全一样，只是**顺序发生了变化**：
+
+先在局部变量表中自增（`iinc 1 by 1`），然后再入栈到操作数栈中（`iload_1`），最后出栈保存到局部变量表中（`istore_1`）。
+
+先自增就保证了自增操作是有效的，不管后面怎么折腾，**参与的都是已经自增后的值**，来个动图：
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155517.gif)
+
+## 4.4 静态变量自增
+
+最后我们看看静态变量`a`的自增操作：
+
+```
+//Source code
+a = a++;
+
+//Byte code
+26 getstatic #4 <com/cc/demo/Hello.a : I>
+29 dup
+30 iconst_1
+31 iadd
+32 putstatic #4 <com/cc/demo/Hello.a : I>
+35 putstatic #4 <com/cc/demo/Hello.a : I>
+```
+
+`getstatic #4`就是获取常量池中索引为`#4`的字面量对应的静态字段。前面已经讲过了，这一步是到堆中去拿的，拿到静态变量的值以后，会放到当前栈帧的操作数栈。
+
+然后执行`dup`操作，**dup是duplicate的缩写**，意思是复制。
+
+`dup`指令的意义就是**复制顶部操作数堆栈值并压入栈中**，也就是说此时的**栈顶有两个一模一样的元素**。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155513.png)
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155616.png)
+
+这是个什么操作啊，两份一样的值能干什么，别急，我们继续往下看。
+
+随后是一个`iconst_1`，将int类型的数值`1`压入栈顶。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155613.png)
+
+然后是一个`iadd`指令，这个指令是将**操作数栈栈顶的两个int类型元素弹出并进行加法运算**，最后将求得的**结果压入栈中**。
+
+像这种两个值进行数值运算的操作，其实是操作数栈中除了简单的入栈出栈外最常见的操作了。
+
+类似的还有`isub`——栈顶两个值相减后结果入栈，`imul`——栈顶两个值相乘后结果入栈等等。
+
+总之，此时的栈顶最上面的两个元素是刚刚压入栈的常量`1`以及静态变量a的值`0`（这是刚才dup之后压入栈的那个），这两数一加，结果入栈，那还是个`1`。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155553.png)
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155607.png)
+
+接下来的指令是一个` putstatic #4`，取栈顶元素出栈并赋值给静态变量，这里当然就是静态变量`a`啦。
+
+因此静态变量a的值就自增完成，变成了`1`。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155549.gif)
+
+可是！！！
+
+事情到这里还没结束，因为字节码中清清楚楚地记录着随后又进行了一次` putstatic #4`操作。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155546.gif)
+
+此时的栈顶元素就是最开始从堆中取过来的变量`a`的初始值`0`，现在把这个值出栈，又赋值给了`a`，这不是中间的操作都白费了吗？
+
+静态变量`a`的值又变成`0`了。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155543.png)
+
+等等，这一波脱裤子放屁的操作怎么似曾相识？
+
+前面局部变量`b = b++`好像也经历过这么一个过程，**先复制一份自己**到操作数栈中，然后**局部变量表**里的值**一顿操作**，最后操作数栈中的**原始值又跑回去把自己给覆盖了**。
+
+静态变量不远万里从堆中赶到操作数栈，**先复制一份自己**造了个分身到操作数栈栈顶，随后对这个**栈顶的分身一顿操作**，最后留在操作数栈中的**原始值又跑回去把自己给覆盖了**。
+
+难道说，这波复制操作是因为**静态变量需要分配一个位置充当局部变量表的作用，另一个位置需要充当操作数栈位置的作用？**
+
+为了验证这个猜测是否正确，我们最后来看看`a = ++a`：
+
+```
+//Source code
+a = ++a;
+
+//Byte code
+47 getstatic #4 <com/cc/demo/Hello.a : I>
+50 iconst_1
+51 iadd
+52 dup
+53 putstatic #4 <com/cc/demo/Hello.a : I>
+56 putstatic #4 <com/cc/demo/Hello.a : I>
+```
+
+相信大家阅读这一段字节码已经没有问题了，我只讲讲中间几句最重要的：
+
+静态变量`a`从堆中被复制到操作数栈之后，紧跟的是一个`iconst_1`，将int类型的数值`1`压入栈顶。
+
+然后是一个`iadd`指令，将**操作数栈栈顶的两个int类型元素弹出并进行加法运算**，也就是刚刚压入栈的常量`1`以及静态变量a的值`0`进行求和操作。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155536.png)
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155533.png)
+
+这两数一加，结果入栈，那就是个`1`。
+
+![图片](https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/03/31/155530.png)
+
+接下来有意思了，进行了一次`dup`操作，那操作数栈中的栈顶此时就有两个`1`了。
+
+**这跟执行`++b`时，局部变量先在局部变量表中自增，再复制一份到操作数栈的操作是不是很像？**
+
+然后是两个` putstatic #4`，取栈顶元素出栈并赋值给静态变量，现在栈顶两个都是`1`，**即使赋值两次，最终静态变量a的值还得是`1`啦**。
+
+懂了吗宝，一切的源头就是因为**静态变量被加载到栈帧后不能加入局部变量表**，因此它将自己的一个分身压到栈顶，现在操作数栈中有两个一模一样的值，**一个充当局部变量表的作用，另一个充当正常操作数栈位置的作用**。
+
+# 5.小结
+
+俗话说，授人以鱼不如授人以渔。本文通过对虚拟机结构的简单介绍，慢慢引申到字节码的执行的过程。
+
+最后用两个例子一步一步手撕字节码，跟着这个思路思考，相信大家以后遇到字节码的问题也能稍微有点头绪了吧。
+
+这里面知识点很多，但只要理解了原理，一起都变得有迹可循，即使遇到复杂的字节码，在需要用到时再去查询对应字节码的含义就行啦~
+
+我是敖丙，**你知道的越多，你不知道的越多**，感谢各位臭宝的：**点赞**、**收藏**和**评论**，我们下期见！
