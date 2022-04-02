@@ -18,4 +18,5 @@ https://xuemingde.com/JavaNotes/
 5. [淘宝超时确认收货是如何实现](https://xuemingde.com/JavaNotes/10)
 6. [MySQL主从延迟读写分离7种解决方案](https://xuemingde.com/JavaNotes/11)
 6. [带你手写字性能提升2倍以上的符串切割工具类](https://xuemingde.com/JavaNotes/12)
+6. [Redis为什么这么快?](https://xuemingde.com/JavaNotes/13)
 
