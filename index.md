@@ -2,6 +2,8 @@
 
 
 
+> https://xuemingde.com/JavaNotes/
+
 
 
 1. [Dubbo是如何基于动态代理实现RPC调用的](https://xuemingde.com/JavaNotes/1)
@@ -17,4 +19,5 @@
 6. [MySQL主从延迟读写分离7种解决方案](https://xuemingde.com/JavaNotes/11)
 6. [带你手写字性能提升2倍以上的符串切割工具类](https://xuemingde.com/JavaNotes/12)
 6. [Redis为什么这么快?](https://xuemingde.com/JavaNotes/13)
+6. [Java 面试题：JVM 方法区和元空间什么关系？为什么要将永久代替换为元空间？](https://xuemingde.com/JavaNotes/14)
 
