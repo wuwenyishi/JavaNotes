@@ -16,6 +16,7 @@
 2. [带你手写字性能提升2倍以上的符串切割工具类](https://xuemingde.com/JavaNotes/202204/2)
 3. [Redis为什么这么快?](https://xuemingde.com/JavaNotes/202204/3)
 4. [Java 面试题：JVM 方法区和元空间什么关系？为什么要将永久代替换为元空间？](https://xuemingde.com/JavaNotes/202204/4)
+5. [MySQL 为什么需要两阶段提交？](https://xuemingde.com/JavaNotes/202204/5)
 
 
 
