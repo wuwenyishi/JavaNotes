@@ -1,8 +1,6 @@
-# HOME
+# [meadel's blog](https://xuemingde.com/)
 
 
-
-https://xuemingde.com/JavaNotes/
 
 
 
