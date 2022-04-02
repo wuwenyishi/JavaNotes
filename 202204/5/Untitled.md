@@ -1,1 +1,0 @@
-<iframe align="center" width="100%" height="1000"  src="https://xuemingde.com/JavaNotes/index.html"  frameborder="no" border="0" marginwidth="0"  marginheight="0" scrolling="yes"></iframe>
