@@ -1,0 +1,680 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857143; overflow-x: hidden; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; tab-size: 4; background-position: inherit; background-repeat: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) { 
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font-family: inherit; font-size: inherit; font-style: inherit; font-variant-caps: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror-linenumber { }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; position: relative !important; background-position: inherit; background-repeat: inherit; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; background-position: 0px 0px; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print { 
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background-color: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background-color: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; }
+a.md-print-anchor { white-space: pre !important; border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; text-shadow: initial !important; background-position: 0px 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom-width: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background-color: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print { 
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; background-position: inherit; background-repeat: inherit; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) { 
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) { 
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.428571429rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ''; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ''; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left-width: 28px; border-left-style: solid; border-left-color: transparent; border-right-width: 28px; border-right-style: solid; border-right-color: transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ''; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right-width: 8px; border-right-style: solid; border-right-color: transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: '−'; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+
+
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; background-position: inherit; background-repeat: inherit; }
+.CodeMirror-scroll { overflow: auto hidden; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; white-space: nowrap; background-position: inherit; background-repeat: inherit; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; background-position: inherit; background-repeat: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; background-position: inherit; background-repeat: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; outline: 0px; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: auto hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 10px; z-index: 3; overflow-y: hidden; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; border: none !important; background-position: 0px 0px !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; border-width: 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; word-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; background-position: 0px 0px; }
+.CodeMirror-wrap pre { word-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right-width: 30px; border-right-style: solid; border-right-color: transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right-style: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; inset: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right-style: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background-color: rgba(255, 255, 0, 0.4); }
+span.cm-underlined { text-decoration: underline; }
+span.cm-strikethrough { text-decoration: line-through; }
+.cm-tw-syntaxerror { color: rgb(255, 255, 255); background-color: rgb(153, 0, 0); }
+.cm-tw-deleted { text-decoration: line-through; }
+.cm-tw-header5 { font-weight: 700; }
+.cm-tw-listitem:first-child { padding-left: 10px; }
+.cm-tw-box { border-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-color: inherit; border-top-width: 0px !important; }
+.cm-tw-underline { text-decoration: underline; }
+@media print { 
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+
+
+ @media print { @page {margin: 0 0 0 0;} body.typora-export {padding-left: 0; padding-right: 0;} #write {padding:0;}}
+</style><title>什么是分布式锁</title>
+</head>
+<body class='typora-export typora-export-show-outline typora-export-collapse-outline'><div class='typora-export-content'>
+<div class="typora-export-sidebar"><div class="outline-content"><li class="outline-item-wrapper outline-h1 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#什么是分布式锁它能干什么">什么是分布式锁？它能干什么？</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h1"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#分布式锁实现方案">分布式锁实现方案</a></div><ul class="outline-children"><li class="outline-item-wrapper outline-h2"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#基于数据库的分布式锁实现方案">基于数据库的分布式锁实现方案</a></div><ul class="outline-children"><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#实现原理-1">实现原理</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#方案分析-1">方案分析</a></div><ul class="outline-children"></ul></li></ul></li><li class="outline-item-wrapper outline-h2"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#基于-redis-的分布式锁实现方案">基于 Redis 的分布式锁实现方案</a></div><ul class="outline-children"><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#基于-sentnx-命令的实现原理">基于 sentnx 命令的实现原理</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#方案分析-2">方案分析</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#基于-redisson-实现">基于 Redisson 实现</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#redlock">RedLock</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#方案分析-3">方案分析</a></div><ul class="outline-children"></ul></li></ul></li><li class="outline-item-wrapper outline-h2"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#基于-zookeeper-的分布式锁实现方案">基于 Zookeeper 的分布式锁实现方案</a></div><ul class="outline-children"><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#实现原理-2">实现原理</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#方案分析-4">方案分析</a></div><ul class="outline-children"></ul></li></ul></li></ul></li><li class="outline-item-wrapper outline-h1 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#分布式锁方案到底选哪个">分布式锁方案到底选哪个？</a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h1 outline-item-single"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#总结">总结</a></div><ul class="outline-children"></ul></li></div></div><div id='write'  class=''><p>&nbsp;</p><h1 id='什么是分布式锁它能干什么'><span>什么是分布式锁？它能干什么？</span></h1><p><span>单体系统中，在高并发场景下想要访问共享资源的时候，我们需要通过加锁的方式来保证共享资源并发的安全性，确保在同一时刻只有一个线程对共享资源进行操作。相信大家对于 Java 提供的 synchronized 关键字以及 Lock 锁都不陌生，在实际的项目中大家都使用过。如下图所示，在同一个 JVM 进程中，Thread1 获得锁之后，对共享资源进行操作，其他线程未获得锁的线程只能等待 Thread1 释放后才能进行对应的操作。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1833-BvHVvB.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>但是随着业务的不断发展，原先的单体应用被拆分为多个微服务，每个微服务又会部署多个实例，于是就形成了当下的微服务架构。处理共享资源的请求来自不同的服务实例，也就是在不同的 JVM 进程中。原先的单体服务中的加锁方式在分布式场景下不能满足共享资源的并发访问要求。因此我们需要一种适用于分布式场景下的共享资源安全的处理机制，此时应对这种问题的分布式锁就应运而生了。</span></p><p><span>既然 JVM 进程管不到其他服务实例的线程，那么可以借助于外部组件能力来实现不同服务实例对于共享资源的统一管控，这种能力我们可以称之为分布式锁。因此分布式锁的本质就是在不同服务实例之外建立一种获取锁的机制，形成一种并发互斥能力来确保不同线程对于共享资源的并发安全，从而实现在微服务架构中同一时刻只有一个线程可以对共享资源进行操作。对于分布式锁来说，实际就是需要一个外部的状态存储系统来实现原子化的排他性操作。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1833-7X3yye.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>通过对于分布式锁的需求分析，总结了如下的分布式锁四大特性，分别是多节点、加锁速度快、排他性以及锁过期实现机制。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1833-kjvClZ.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><h1 id='分布式锁实现方案'><span>分布式锁实现方案</span></h1><h2 id='基于数据库的分布式锁实现方案'><span>基于数据库的分布式锁实现方案</span></h2><h3 id='实现原理-1'><span>实现原理</span></h3><p>&nbsp;</p><p><span>通过数据库的方式实现分布式锁的效果，实际就是借助于数据库的唯一性约束特性或者 for update 来实现。这里以唯一性约束来举个栗子，在电商领域的库存服务负责对商品的库存进行扣减，首先创建一张专门存放锁信息的锁表，那么库存服务在进行库存操作之前，先向数据库中的锁表插入一条锁资源数据。</span></p><pre class="md-fences md-end-block ty-contain-cm modeLoaded" spellcheck="false" lang=""><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 9px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">create table ‘distributed_lock’ (‘id’ BIGINT NOT NULL AUTO_INCREMENT,‘resource_lock_key‘ varchar(64) NOT NULLPRIMARY KEY(‘id’),UNIQUE KEY ‘uk_resource_lock_key‘ (‘resource_lock_key‘) USING BTREE)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: transparent; top: 44px;"></div><div class="CodeMirror-gutters" style="display: none; height: 44px;"></div></div></div></pre><p><span>大致的交互流程如下：</span></p><p><span>1、当库存服务进行手机库存扣减的时候，首先先向数据库中的锁表当中插入一条资源锁信息；</span></p><p><span>2、如果插入成功，则表示库存服务 1 可以对手机库存进行库存扣减操作；</span></p><p><span>3、此时库存服务 2 也要对库存进行操作，于是同样插入数据到锁表中；</span></p><p><span>4、但是由于锁表设置了唯一性约束，锁信息插入失败，库存服务进行等待；</span></p><p><span>5、库存服务 1 执行完库存扣减之后，删除锁表的信息；</span></p><p><span>6、库存服务 2 尝试插入资源锁信息，发现可以插入成功，继续执行后续操作。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1833-yvPyoW.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><h3 id='方案分析-1'><span>方案分析</span></h3><p><span>基于数据库的实现方式，看起来还是比较容易理解的。但是实际上还是有一些问题存在的，我们一起来分析下。</span></p><p><span>1、性能问题：由于是插入数据数据需要落盘存储，如果平凡进行读写的话会影响数据库性能，另外由于使用唯一键进行判断也会一定程度上影响数据库性能，因此数据库方案适用于并发量不到的简单场景；</span></p><p><span>2、数据库如果单点部署的话会存在单点故障问题，如果数据库出现故障，可能会导致平台中的业务异常；</span></p><p><span>3、死锁问题：在上文介绍中，包含了插入数据库的获取锁的步骤，还包含了删除锁信息的释放锁的过程，但是如果库存服务 1 在加锁之后挂掉了，无法进行锁的释放，而其他服务又无法获取到锁就会造成死锁的问题。当然了我们可以通过一个定时任务去检查锁表中是不是有过时的锁资源。但是这样无疑增加了分布式锁实现的复杂性。</span></p><p><span>4、不支持可重入：如果想要实现可重入锁，还需要增加主机、线程名等字段来进行标注，通过这几个字段来判断和当前信息是否一致，如果一致则认为已经获取到了锁。</span></p><p><span>鉴于以上的这些问题，有没有其他的分布式实现方案可以避免上述存在的问题呢？我们再往下来看。</span></p><p>&nbsp;</p><h2 id='基于-redis-的分布式锁实现方案'><span>基于 Redis 的分布式锁实现方案</span></h2><h3 id='基于-sentnx-命令的实现原理'><span>基于 sentnx 命令的实现原理</span></h3><p><span>Redis 作为一块高性能的数据库中间件，经常被当做缓存在项目中使用。因此通过 Redis 实现分布式锁，也是比较常见的实现方案。 一样的道理，通过 Redis 实现分布式锁也需要通过它实现锁的互斥的能力。实际上就是利用了 sentnx（set if not exists）命令。同时该命令是否能够设置成功，决定服务是否可以拿到对应的分布式锁。</span></p><p>&nbsp;</p><pre class="md-fences md-end-block ty-contain-cm modeLoaded" spellcheck="false" lang=""><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 9px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">127.0.0.1:6379&gt; setnx stockLock 10.12.35.12_stockService (integer) 1</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: transparent; top: 22px;"></div><div class="CodeMirror-gutters" style="display: none; height: 22px;"></div></div></div></pre><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1834-k2pCCM.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>如上图所示，大致的加锁以及释放锁的过程其实和数据库的分布式锁方案还是比较类似的。只不过将其中向数据库插入数据的步骤替换成了向 Redis 获取锁的步骤，由于 Redis 是基于内存进行操作的，因此性能上比基于数据库的分布式锁方案更好一点。</span></p><h3 id='方案分析-2'><span>方案分析</span></h3><p><span>上述基于 Redis 的方案的方案在性能上具有优势，我们再来分析下，这个使用命令的方式有没有什么问题。实际上和前面的数据库方案类似，Redis 也会有死锁问题，当获取锁之后如果库存服务 1 挂掉了，库存服务 2 就获取不到锁了。因此我们要对其进行优化。那么问题的本质是如何让锁可以释放，因此我们需要在设置锁的时候加上过期时间，这样即使库存服务 1 挂了，无法主动释放锁，那么到了过期时间后锁失效，库存服务 2 依然可以获取锁，不会再造成死锁问题。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1834-vv4cZJ.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>另外还应该注意的是，在我们设置锁的时候，还需要带有自身服务的业务属性，否则容易造成错乱。为什么这么说呢？举个栗子，库存服务在加完锁之后开始执行扣减库存的任务，当扣减库存完成之后，服务挂了，原先需要删除的锁资源，等到过期之后被 Redis 删除，此时库存服务 2 可以继续申请锁，如果此时库存服务 1 恢复了，它并不知道锁资源已经释放，起来后立马删除了库存服务 2 加的锁，那么此时就会出现两个问题：</span></p><p><span>1、库存服务执行完库存扣减之后，回头来进行锁资源释放的时候，发现锁实际已经不在了；</span></p><p><span>2、当库存服务 1 恢复后发现锁还在，立马删除了该锁，完成了它挂掉之前未完成的工作。但是实际上这个锁是库存服务 2 加的锁，如果此时库存服务 3 也要尝试加锁，发现可以加锁成功，和库存服务 2 一样同样对库存进行操作，那么此时就会出现线程安全问题。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1834-phIb0v.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>经过上文的分析，这个问题的根源就是在加锁的时候没有具体区分到底是哪个服务加的锁。因此在执行命令的时候，我们需要将带有服务实例关联属性的设置为 value，这样在进行锁获取的时候检查下当前锁的持有者是谁，如果不是服务实例自己则不能执行删除操作。</span></p><p><span>那这样是不是就完美解决问题了呢？实际上还是有问题存在的，有同学会说，怎么这么多问题？实际上这种方案的实现就是在各种不完美的方案中逐渐找到相对完美的方案。</span></p><p><span>上文提到的获取锁判断是不是自己方服务实例加的锁，再执行删除锁的过程实际并不是原子的。因此还是会出现并发安全问题，这个问题可以通过 lua 脚本来解决，在 lua 脚本中实现这个逻辑，而不是在客户端中实现。</span></p><p><span>但是实际上还是有问题没有解决，比如说我们在加锁的时候会设置过期时间，但是过期时间应该设置多长时间呢？设置短了的话，出现网络超时或者服务还没有执行完业务，锁就失效了。设置长了话，其他服务节点等待获取锁的时间就会变长，降低了服务的性能。</span></p><p>&nbsp;</p><h3 id='基于-redisson-实现'><span>基于 Redisson 实现</span></h3><p><span>Redisson 实际上就是一个封装了 Redis 操作的客户端，实现了对于常见的 Redis 操作的封装。如对于 Redis 的设置锁的步骤以及删除锁的步骤都进行了封装。在设置锁的操作中，还引入了自动给锁续期的机制，SDK 检测到业务未完成，但是锁要到期后，执行定续期。这样并可以动态的调节过期时间，避免锁在业务未完成情况下被释放的问题。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1835-X7OeVP.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>同时还封装了删除锁的时候执行的业务判断后再删除的逻辑，这样我们在使用 Redisson 操作 Redis 的时候，就和我们使用 JDK 一样。</span></p><h3 id='redlock'><span>RedLock</span></h3><p><span>为了解决 Redis 作为分布式锁存在的单点问题，Redis 的作者又提出了 Redlock 的解决方案，该解决方案依赖多个 Redis 的 Master 节点，官方推荐使用 5 个 Master 节点，他们彼此之间是独立的。大致的交互步骤如下所示：</span></p><p><span>1、首先获取当前节点的系统时间；</span></p><p><span>2、客户端尝试向所有的 Redis 实例顺序地发送加锁的请求（官方推荐 Redis 集群至少 5 个实例），在设置锁的过程中，使用相同的 key 以及随机值 value，同时请求的超时时间需要远小于锁的有效时间。这样做的目的是为了防止节点不可用的时候导致请求锁的时候被阻塞，当实例没响应的时候可以快速跳过，向下一个节点继续请求锁。</span></p><p><span>3、假设 Redis 集群规模为 5，那么如果客户端在大多数实例中（超过 3 个实例）获得了锁，同时计算了当前的时间减去步骤 1 中获得的时间，这个事件差如果小于锁的有效时间，那么此时可以认为加锁成功，可以操作执行后续的业务；</span></p><p><span>4、如果不满足步骤 3 是条件，那么就表示加锁失败，客户端需要向所有的 Redis 节点发起锁释放请求。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1835-bWlRuP.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><h3 id='方案分析-3'><span>方案分析</span></h3><p><span>为什么 Redlock 要在集群中多个实例上加锁呢？实际目的是通过锁的冗余来实现分布式锁的高容错性。试想一下如果只有一个 Redis 实例，一旦它挂掉了，客户端就无法进行加锁操作了或者锁信息就会丢失，影响业务功能。通过在集群中多实例中冗余锁信息，即使出现 Redis 挂了的情况，其他节点中依然存在锁信息，从而提升了分布式锁的可用性。</span></p><p><span>那么为什么还要计算几所时间呢？由于我们加锁的时候，每个节点都设置了超时时间，如果整个加锁的时间过长，整个过程的累加时间超过了锁的有效时间，那么加锁完成之后就会哦出现锁失效的情况了，因此我们需要确保加锁的事件尽可能的短，这也是为什么加锁请求都有超时时间的原因了，发现超时立马跳到下一个节点，避免单个节点耗时过长。</span></p><p><span>虽然 Redlock 看上去是比较完善的分布式解决方案，但是实际上这个方案是比较重的，需要维护一个 Redis 集群，另外过程中依赖系统时间，但是如果出现了时间跳变，那么对于整个分布式锁都有非常大的影响。</span></p><p>&nbsp;</p><h2 id='基于-zookeeper-的分布式锁实现方案'><span>基于 Zookeeper 的分布式锁实现方案</span></h2><h3 id='实现原理-2'><span>实现原理</span></h3><p><span>Zookeeper 是一个分布式的应用协调服务中间件，通过它也可以实现分布式锁的效果，这里介绍的是基于临时有序的 ZNode 分布式锁实现方案。在介绍方案之前，先补充下 Zookeeper 中和分布式锁息息相关的特性。</span></p><p><span>我们来看下 Zookeeper 的数据结构，实际上它是一种树形模型，类似于 Linux 的文件系统。Zookeeper 使用类似于文件目录的层级目录数据结构来组织自身的数据存储节点，这些节点就被称作为 ZNode，每个节点都用一个以斜杠（/）分隔的路径来表示，而且每个节点都有父节点（根节点除外）。另外在 Zookeeper 中，如果我们使用不同的创建参数，可以创建不同类型的 ZNode。</span></p><p><span>1、持久化 ZNode：当 createMode 为 PERSISTENT 会创建持久化 ZNode，节点存储的数据会永久保存在 Zookeeper 中，如果 createMode 为 PERSISTENT_SEQUENTIAL，则会创建有序持久化 ZNode，和之前的持久化节点不通的是，有序持久化节点的节点名称会附加上全局有序的递增序号；</span></p><p><span>2、临时 ZNode：当 createMode 为 EPHEMERAL 时，创建的节点临时节点，在与客户端的 session 过期后，对应的临时节点也会被删除。当 createMode 为 EPHEMERAL_SEQUENTIAL 时创建出来的为有序的临时节点，当 session 过期之后，节点及其存储的数据也是会被删除的。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1835-bpWbqO.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>通过上述对于节点特性的描述，可以看出来它的全局递增有序以及过期删除的特性与分布式锁实现的原理非常契合。因此通过 Zookeeper 实现分布式锁的大致可以分为以下几个步骤：</span></p><p><span>1、首先创建一个持久化节点也就是父节点，这个持久化节点代表着一个分布式锁实例；</span></p><p><span>2、当有线程想要申请分布式锁的时候，则在该持久化节点下创建临时有序节点；</span></p><p><span>3、如果此时新建的临时有序节点是该父节点小所有有序节点中序号最小的节点，那么此时就表示申请到了分布式锁；</span></p><p><span>4、如果新建的临时节点当前不是最小序号的节点，则需要不断检查是否最小，知道最终获取到锁，或者节点超时。实际上这个是通过 Zookeeper 的 watch 机制实现的，在当前节点的上一序号的节点设置监听器，检查是否为最小节点的任务可以一直阻塞，直到收到上一节点被删除的时间事件，则唤醒检查事件，检查当前节点是不是最小序号节点。</span></p><p><span>5、当线程执行完业务之后，可以手动删除该临时节点以便于释放持有的锁。另外即使服务挂掉，由于对应的 session 失效，对应的临时节点也会被删除，防止出现死锁问题。</span></p><p>&nbsp;</p><p><img src="https://cdn.jsdelivr.net/gh/wuwenyishi/shared@image/2022/04/03/1835-qOcHG1.png" referrerpolicy="no-referrer" alt="img"><span> </span></p><p><span>和 Redisson 类似，我们在实际使用 Zookeeper 作为分布式锁的时候可以用 Curator 来作为开发 SDK，它同样封装了很多实现，包括可重入锁的实现，减轻了使用者的负担。</span></p><h3 id='方案分析-4'><span>方案分析</span></h3><p><span>看上去通过 Zookeeper 实现分布式锁还是比较好的一种解决方案，但是它是完美的吗？从上面的分布式锁的流程可知，客户端线程想要获取锁就需要创建临时节点，这个时候客户端和 Zookeeper 之间就会维护一个 session，来表示该客户端还在排队等待获取锁。因此这个方案的潜在问题就在于一旦出现网络异常，或者客户端发生 STW GC，那么就可能导致 session 关闭，从而导致临时节点被关闭，此时就会出现原来客户端持有的锁被删除了，如果有另外的客户端过来加锁的话可以成功获取，那么此时就出现并发安全问题了。因此在这种极端条件下，Zookeeper 的分布式锁实现方案也不是 100%保证安全的。</span></p><p><span>另外实际上还有基于 etcd 的分布式锁实现方案，其基本原理和 Zookeeper 差不多，感兴趣的同学可以再进行了解下。</span></p><h1 id='分布式锁方案到底选哪个'><span>分布式锁方案到底选哪个？</span></h1><p><span>通过上述几种分布式锁方案原理的阐述以及问题分析，每个方案都有自己的长处以及缺点。所以在实际项目落地的时候，我么需要结合实际来进行分布式锁方案的选择。比如如果平台中本身已经有 Redis 集群了，但是没有 Zookeeper 集群，那么我们就可以借助于现有的基础实施来落地分布式锁，不需要再去维护一套 Zookeeper 集群。</span></p><p><span>另外根据实际的业务场景，如果并发量并不是很高，也可以通过简单的数据库的分布式锁方案来实现。</span></p><h1 id='总结'><span>总结</span></h1><p><span>本文首先对从单机时代到分布式场景下的分布式锁的产生的背景进行了分析，通过对分布式锁的本质问题的探究，引出了数据库分布式锁方案、Redis 分布式锁方案以及 Zookeeper 分布式锁方案，并对每一种方案的优点以及不足进行了分析，相信大家可以在落地实现分布式锁的时候可以按照自身的情况选择合适的方案。</span></p></div></div>
+
+<script>(function (){var t=document.body.parentElement,e=[],n=null,i=document.body.classList.contains("typora-export-collapse-outline"),r=function(t,e,n){document.addEventListener(t,function(t){if(!t.defaultPrevented)for(var i=t.target;i&&i!=this;i=i.parentNode)if(i.matches(e)){!1===n.call(i,t)&&(t.preventDefault(),t.stopPropagation());break}},!1)};function o(){return t.scrollTop}r("click",".outline-expander",function(t){var e=this.closest(".outline-item-wrapper").classList;return e.contains("outline-item-open")?e.remove("outline-item-open"):e.add("outline-item-open"),c(),!1}),r("click",".outline-item",function(t){var e=this.querySelector(".outline-label");if(location.hash="#"+e.getAttribute("href"),i){var n=this.closest(".outline-item-wrapper").classList;n.contains("outline-item-open")||n.add("outline-item-open"),l(),n.add("outline-item-active")}});var a,s,u=function(){var t=o();n=null;for(var i=0;i<e.length&&e[i][1]-t<60;i++)n=e[i]},l=function(){document.querySelectorAll(".outline-item-active").forEach(t=>t.classList.remove("outline-item-active")),document.querySelectorAll(".outline-item-single.outline-item-open").forEach(t=>t.classList.remove("outline-item-open"))},c=function(){if(n){l();var t=document.querySelector('.outline-label[href="#'+(CSS.escape?CSS.escape(n[0]):n[0])+'"]');if(t)if(i){var e=t.closest(".outline-item-open>ul>.outline-item-wrapper");if(e)e.classList.add("outline-item-active");else{for(var r=(t=t.closest(".outline-item-wrapper")).parentElement.closest(".outline-item-wrapper");r;)r=(t=r).parentElement.closest(".outline-item-wrapper");t.classList.add("outline-item-active")}}else t.closest(".outline-item-wrapper").classList.add("outline-item-active")}};window.addEventListener("scroll",function(t){a&&clearTimeout(a),a=setTimeout(function(){u(),c()},300)});var f=function(){s=setTimeout(function(){!function(){e=[];var t=o();document.querySelector("#write").querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(n=>{var i=n.getAttribute("id");e.push([i,t+n.getBoundingClientRect().y])})}(),u(),c()},300)};window.addEventListener("resize",function(t){s&&clearTimeout(s),f()}),f()})();</script></body>
+</html>
