@@ -2,24 +2,6 @@
 
 
 
-## 《大唐王朝》看完唐朝全部历史
-
-<iframe align="center" width="100%" height="500"  src="https://www.bilibili.com/video/BV1tQ4y1B7Ar?"  frameborder="no" border="0" marginwidth="0" marginheight="0"  scrolling="yes"></iframe>
-
-
-
-***
-
-## 【合集】大汉王朝系列：一次看懂汉朝四百年历史
-
-<iframe align="center" width="100%" height="500"  src="https://www.bilibili.com/video/BV1f44y157aC"  frameborder="no" border="0" marginwidth="0" marginheight="0"  scrolling="yes"></iframe>
-
-****
-
-## 【获奖微电影合集】收藏以后慢慢看，全球精品微电影丨短片丨短剧丨剧情片
-
-<iframe align="center" width="100%" height="500"  src="https://www.bilibili.com/video/BV1qE411M7da"  frameborder="no" border="0" marginwidth="0" marginheight="0"  scrolling="yes"></iframe>
-
 
 
 ****
