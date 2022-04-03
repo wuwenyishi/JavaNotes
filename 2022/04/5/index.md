@@ -1,9 +1,5 @@
 # MySQL 为什么需要两阶段提交？
 
-<iframe align="center" width="100%" height="2000"  src="https://xuemingde.com/JavaNotes/index.html"  frameborder="no" border="0" marginwidth="0"  marginheight="0" scrolling="no"></iframe>
-
-
-
 
 
 ## 1. 什么是两阶段提交
