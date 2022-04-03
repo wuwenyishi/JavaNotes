@@ -13,6 +13,8 @@
 3. [Redis为什么这么快?](https://xuemingde.com/JavaNotes/2022/04/3)
 4. [Java 面试题：JVM 方法区和元空间什么关系？为什么要将永久代替换为元空间？](https://xuemingde.com/JavaNotes/2022/04/4)
 5. [MySQL 为什么需要两阶段提交？](https://xuemingde.com/JavaNotes/2022/04/5)
+5. [什么是分布式锁？它能干什么](https://xuemingde.com/JavaNotes/2022/04/6)
+5. [大白话讲解 JDK 源码系列：从头到尾再讲一遍 ThreadLocal](https://xuemingde.com/JavaNotes/2022/04/7)
 
 
 
