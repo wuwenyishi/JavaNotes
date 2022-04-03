@@ -1,12 +1,16 @@
-**大白话讲解 JDK 源码系列：从头到尾再讲一遍 ThreadLocal**
+# 从头到尾再讲一遍ThreadLocal
+
+> [HOME](https://xuemingde.com/JavaNotes/)
+>
+> 发布于 2022.04.01
 
 
 
-# 引言
+## 引言
 
 其实网上有很多关于`ThreadLocal`的文章了，有不少文章也已经写的非常好了。但是很多同学反应还有一些部分没有讲解的十分清楚，还是有一定的疑惑没有想的十分清楚。因此本文主要结合常见的一些疑问、`ThreadLocal`源码、应用实例以注意事项来全面而深入地再详细讲解一遍`ThreadLocal`。希望大家看完本文后可以彻底掌握`ThreadLocal`。
 
-# ThreadLocal 是什么？它能干什么？在阐述 ThreadLocal 之前
+## ThreadLocal 是什么？它能干什么？在阐述 ThreadLocal 之前
 
 
 
@@ -34,7 +38,7 @@
 
 
 
-# ThreadLocal 实现线程隔离的秘密
+## ThreadLocal 实现线程隔离的秘密
 
 
 
@@ -108,7 +112,7 @@ public class ThreadLocal<T> {
 
 
 
-# 为什么 ThreadLocal 会出现 OOM 的问题？
+## 为什么 ThreadLocal 会出现 OOM 的问题？
 
 ## 内存泄漏演示
 
@@ -159,7 +163,7 @@ public class ThreadLocal<T> {
 
 
 
-# 父子线程的参数传递
+## 父子线程的参数传递
 
 到这里，我相信大家对于`ThreadLocal`的原理有了比较深入的理解了。结合上文中的`ThreadLocal`代码，不知道大家有没有思考过一个问题，我们在使用`ThreadLocal`的时候都是在同一个线程内进行了`set`以及`get`操作，那么如果`set`操作与`get`操作在父子线程中是否还可以正常的获取呢？带着这样的疑问，我们来看下如下的代码。
 
