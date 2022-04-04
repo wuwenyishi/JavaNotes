@@ -11,6 +11,7 @@
 
 1. [如何优雅地记录操作日志](https://xuemingde.com/JavaNotes/2022/04/04/如何优雅地记录操作日志)
 2. [Redis为什么这么快](https://xuemingde.com/JavaNotes/2022/04/04/Redis为什么这么快)
+3. [聊聊ThreadLocal的内存泄漏问题 ](https://xuemingde.com/JavaNotes/2022/04/04/聊聊ThreadLocal的内存泄漏问题)
 
 
 
