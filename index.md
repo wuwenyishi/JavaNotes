@@ -15,7 +15,7 @@
 * [Redis为什么是单线程还这么快?](https://blog.csdn.net/XingXing_Java/article/details/92626174)
 * [Redis与MySQL双写一致性如何保证](https://juejin.cn/post/6964531365643550751)
 * [Redis为什么这么快?](https://xuemingde.com/JavaNotes/202204/3/)
-* [缓存穿透-缓存击穿-缓存雪崩](https://xuemingde.com/JavaNotes/2022/04/05/缓存穿透-缓存击穿-缓存雪崩/index.md)
+* [缓存穿透-缓存击穿-缓存雪崩](https://xuemingde.com/JavaNotes/2022/04/05/缓存穿透-缓存击穿-缓存雪崩)
 * [如何保证缓存和数据库的一致性](https://xuemingde.com/JavaNotes//2022/04/05/如何保证缓存和数据库的一致性)
 * [Redis为什么这么快](https://xuemingde.com/JavaNotes/2022/04/04/Redis为什么这么快)
 
