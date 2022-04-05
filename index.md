@@ -11,7 +11,7 @@
 
 # Reids
 * [互联网公司使用 Redis 的16个应用场景](https://ibit.tech/archives/redis-16-usage-situation)
-* [洞察|Redis是单线程的，但Redis为什么这么快？](https://zhuanlan.zhihu.com/p/42272979)
+* [洞察Redis是单线程的，但Redis为什么这么快？](https://zhuanlan.zhihu.com/p/42272979)
 * [Redis为什么是单线程还这么快?](https://blog.csdn.net/XingXing_Java/article/details/92626174)
 * [Redis与MySQL双写一致性如何保证](https://juejin.cn/post/6964531365643550751)
 * [Redis为什么这么快?](https://xuemingde.com/JavaNotes/202204/3/)
