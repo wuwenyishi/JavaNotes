@@ -2,7 +2,7 @@
 
 # JVM 
 * [5张图带你彻底理解G1垃圾收集器](https://mp.weixin.qq.com/s/-r7K60aoZFCP9vLgfixiDA)
-* [MVCC弄懂了真的好爽](https://xuemingde.com/JavaNotes/2022/04/05/MVCC弄懂了真的好爽/)
+
 
 
 
@@ -14,10 +14,7 @@
 * [洞察Redis是单线程的，但Redis为什么这么快？](https://zhuanlan.zhihu.com/p/42272979)
 * [Redis为什么是单线程还这么快?](https://blog.csdn.net/XingXing_Java/article/details/92626174)
 * [Redis与MySQL双写一致性如何保证](https://juejin.cn/post/6964531365643550751)
-* [Redis为什么这么快?](https://xuemingde.com/JavaNotes/202204/3/)
-* [缓存穿透-缓存击穿-缓存雪崩](https://xuemingde.com/JavaNotes/2022/04/05/缓存穿透-缓存击穿-缓存雪崩)
-* [如何保证缓存和数据库的一致性](https://xuemingde.com/JavaNotes//2022/04/05/如何保证缓存和数据库的一致性)
-* [Redis为什么这么快](https://xuemingde.com/JavaNotes/2022/04/04/Redis为什么这么快)
+
 
 
 
@@ -34,12 +31,7 @@
 # 分布式
 * [用通俗的语言介绍 RPC 框架的架构原理](https://mp.weixin.qq.com/s/ltos1nEgktec5pn47xAgMw)
 * [ 并发-分布式锁质量保障总结 ](https://juejin.cn/post/7075571815132692494)
-* [聊聊ThreadLocal的内存泄漏问题 ](https://xuemingde.com/JavaNotes/2022/04/04/聊聊ThreadLocal的内存泄漏问题)
-* [什么是分布式锁？它能干什么](https://xuemingde.com/JavaNotes/2022/04/01/什么是分布式锁)
-* [大白话讲解 JDK 源码系列：从头到尾再讲一遍 ThreadLocal](https://xuemingde.com/JavaNotes/2022/04/01/从头到尾再讲一遍ThreadLocal)
- []()
- []()
- []()
+
 
 
 # Spring & SpringBoot  
@@ -54,7 +46,7 @@
 * [23 种设计模式的通俗解释，虽然有点污，但是秒懂](https://mp.weixin.qq.com/s/l1p1-jFNWkADRIN3qtewpg)
 
 # 设计方案
-* [如何优雅地记录操作日志](https://xuemingde.com/JavaNotes/2022/04/04/如何优雅地记录操作日志)
+
 
 
 # 网络通信  
