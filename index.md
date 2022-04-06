@@ -2,6 +2,7 @@
 
 # JVM 
 * [5张图带你彻底理解G1垃圾收集器](https://mp.weixin.qq.com/s/-r7K60aoZFCP9vLgfixiDA)
+* [MVCC弄懂了真的好爽](https://xuemingde.com/JavaNotes/JVM/MVCC%E5%BC%84%E6%87%82%E4%BA%86%E7%9C%9F%E7%9A%84%E5%A5%BD%E7%88%BD)
 
 
 
@@ -14,6 +15,9 @@
 * [洞察Redis是单线程的，但Redis为什么这么快？](https://zhuanlan.zhihu.com/p/42272979)
 * [Redis为什么是单线程还这么快?](https://blog.csdn.net/XingXing_Java/article/details/92626174)
 * [Redis与MySQL双写一致性如何保证](https://juejin.cn/post/6964531365643550751)
+* [烂大街的缓存穿透、缓存击穿和缓存雪崩，你真的懂了](https://xuemingde.com/JavaNotes/%E6%95%B0%E6%8D%AE%E5%BA%93/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9)
+* [如何保证缓存和数据库的一致性](https://xuemingde.com/JavaNotes/%E6%95%B0%E6%8D%AE%E5%BA%93/%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7)
+
 
 
 
