@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script type="text/javascript">
+            navigator.sayswho = (function(){
+                var ua= navigator.userAgent, tem,
+                M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+                if(/trident/i.test(M[1])){
+                    tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                    return 'IE '+(tem[1] || '');
+                }
+                if(M[1]=== 'Chrome'){
+                    tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+                    if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+                }
+                M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+                if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+                return M.join(' ');
+            })();
+
+                    </script>
+
+        <title>Z-Library Project</title>
+<base href="/">
+
+                        <meta charset="utf-8">		                       
+                        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <meta name="title" content="Z-Library Project">
+			<meta name="description" content="Z-Library Project | Z-Library. Download books for free. Find books">
+			<meta name="robots" content="index,all">
+			<meta name="distribution" content="global">
+			<meta http-equiv="cache-control" content="no-cache">
+			<meta http-equiv="pragma" content="no-cache">
+
+                        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1">
+                        <link rel="icon" href="favicon.svg">
+                        <link rel="icon" type="image/svg+xml" href="/favicon-32x32.svg?v=2" sizes="32x32">
+                        <link rel="icon" type="image/svg+xml" href="/favicon-16x16.svg?v=2" sizes="16x16">
+                        <link rel="manifest" href="/manifest.json?v=1" crossorigin="use-credentials">
+                        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=1" color="#5bbad5">
+                        <meta name="apple-mobile-web-app-title" content="Z-Library">
+                        <meta name="application-name" content="Z-Library">
+                        <meta name="theme-color" content="#ffffff">
+
+                        <meta name="propeller" content="49c350d528ba144cace841cac74260ab">
+                        <meta name="alfacoins-site-verification" content="5ef0e7b2483f15ef0e7b2484275ef0e7b24845d_ALFAcoins">
+                        <meta name="format-detection" content="telephone=no">
+	
+<!-- CSS SET -->
+<!-- JS SET --> 
+<link REL="SHORTCUT ICON" HREF="/favicon.ico?v=1">
+        <link rel="search" type="application/opensearchdescription+xml" href="/search.xml" title="Search for books in the library Z-Library" />
+
+                    <link rel="stylesheet" type="text/css" href="/resources/build/global.css?0.608" />
+            <script type="text/javascript" src="/resources/build/global.js?0.608"></script>
+        <link rel="stylesheet" type="text/css" href="/resources/css/zaccess.css?0.608" />
+        <noscript>
+            <link rel="stylesheet" type="text/css" href="/resources/css/noscript.css?0.608" />
+        </noscript>
+
+        
+        <script>
+            window != top ? window.stop() : null;
+                        
+            const Config = {"domainHost":"go-to-zlibrary.se","BRegion":"china","Country":"cn","accessByIp":false,"supportEmail":"support@z-lib.se"};
+            const CurrentUser = new User(null);
+            const CurrentClientIP = "180.166.147.60";
+            const CurrentSiteMode = 'zaccess';
+            const proxiesToCheck = []; //for google verification
+
+            i18next
+                .use(i18nextHttpBackend)
+                .init({
+                    lng: 'en',
+                    fallbackLng: 'en',
+                    backend: {
+                        loadPath: '/resources/build/translations-frontend/{{lng}}?v=0.608'
+                    }
+                })
+
+            $(document).ready(function() {
+                $('.tooltip-init').tooltip({html: true})
+
+                            })
+
+            $(document).on('focus', '.form-email-field', function() {
+                $(this).tooltip('hide')
+            })
+
+            $(document).on('change', '.form-email-field', function() {
+                const $input = $(this)
+                const email = $input.val()
+
+                $input.parents('.form-group').find('.form-error').remove()
+            })
+
+            $(document).on('focus', '.form-email-field', function() {
+                $(this).tooltip('hide')
+            });
+
+            
+        </script>
+            </head>
+
+    <body style="margin:0px;padding:0px;" class="subprojects/zaccess/index zaccess" data-proxy="false">
+                            <div class="social-share-buttons"></div>
+                            <div class="support-us-headline" style="display: none">
+                <i class="speaker-icon"></i>
+                <span>Support us in the fight for the freedom of knowledge</span>
+                <a href="/support-us">Sign the petition</a>
+                <span class="support-us-headline-hide">Hide info</span>
+            </div>
+                <table class="super-puper-main-container" border="0" cellpadding="0" cellspacing="0" style="">
+            <tbody>
+                <tr style="height:10px;">
+                    <td style="vertical-align: top;">
+                        <div class="container-fluid">
+                            <style>
+    ul.language-list { bottom: auto !important; }
+</style>
+
+<div id="colorBoxes">
+    <ul>
+        <li style="background: #49afd0; width: 120px;">&nbsp;</li>
+
+        <li style="background: #8ecd51; width: 120px;">&nbsp;</li>
+    </ul>
+</div>
+
+<div style="position:static;padding: 10px 0;display:flex;align-items:flex-end;column-gap:10px;margin-bottom:10px;justify-content: flex-end;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:flex-end;gap:10px">
+        <div class="dropdown hxLable" style="color:#888">
+            <i class="zlibicon-globe" style="margin-right: 6px;"></i>
+            
+<a href="#" class="link-option dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">English<span class="caret" style="margin-left: 10px;"></span></a>
+<ul class="dropdown-menu language-list" id="footerLanguageList">
+<li><a href='//go-to-zlibrary.se/'>English</a></li><li><a href='//ru.go-to-zlibrary.se/'>Русский</a></li><li><a href='//es.go-to-zlibrary.se/'>Español</a></li><li><a href='//it.go-to-zlibrary.se/'>Italiano</a></li><li><a href='//el.go-to-zlibrary.se/'>ελληνικά</a></li><li><a href='//ar.go-to-zlibrary.se/'>اللغة العربية</a></li><li><a href='//id.go-to-zlibrary.se/'>Bahasa Indonesia</a></li><li><a href='//ms.go-to-zlibrary.se/'>Bahasa Malaysia</a></li><li><a href='//hi.go-to-zlibrary.se/'>हिन्दी</a></li><li><a href='//de.go-to-zlibrary.se/'>Deutsch</a></li><li><a href='//fr.go-to-zlibrary.se/'>Français</a></li><li><a href='//pt.go-to-zlibrary.se/'>Português</a></li><li><a href='//uk.go-to-zlibrary.se/'>Українська</a></li><li><a href='//pl.go-to-zlibrary.se/'>Polski</a></li><li><a href='//zh.go-to-zlibrary.se/'>汉语</a></li><li><a href='//tw.go-to-zlibrary.se/'>繁體中文</a></li><li><a href='//ja.go-to-zlibrary.se/'>日本語</a></li><li><a href='//vi.go-to-zlibrary.se/'>Tiếng Việt</a></li><li><a href='//az.go-to-zlibrary.se/'>Azərbaycan Dili</a></li><li><a href='//hy.go-to-zlibrary.se/'>Հայոց լեզու</a></li><li><a href='//th.go-to-zlibrary.se/'>ภาษาไทย</a></li><li><a href='//tr.go-to-zlibrary.se/'>Türk Dili</a></li><li><a href='//ka.go-to-zlibrary.se/'>ქართველი</a></li><li><a href='//bn.go-to-zlibrary.se/'>বাংলা</a></li><li><a href='//ps.go-to-zlibrary.se/'>پښتو</a></li><li><a href='//te.go-to-zlibrary.se/'>తెలుగు</a></li><li><a href='//ur.go-to-zlibrary.se/'>اردو</a></li><li><a href='//ko.go-to-zlibrary.se/'>한국어</a></li><li><a href='//sr.go-to-zlibrary.se/'>Srpski</a></li><li><a href='//bg.go-to-zlibrary.se/'>Български</a></li></ul>
+
+        </div>
+    </div>
+</div>                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="g-page-content">
+                        <div class="container " style="max-width: 1000px;padding-bottom: 40px;">
+                            <div class="row">
+                                <div class="col-md-12 itemFullText">
+                                    
+    <img src="/img/logo.zlibrary.png" style="width: 220px; margin: 60px 0 30px;" alt="Z-Library" title="Z-Library">
+
+<div class="z-access">
+    <div class="z-access__top">
+        <div class="z-access__top-content">
+            <h1 class="z-access__top-title">Stay connected to our library!</h1>
+            <p class="z-access__top-text">Take advantage of the following options to access Z-Library. For the latest news and announcements, check out our Telegram channel</p>
+        </div>
+        <a href="https://t.me/zlibrary_official" target="_blank" class="z-access__top-btn z-btn-primary"><i class="zlibicon-telegram"></i>Follow us on Telegram</a>
+    </div>
+    <div class="z-access__content">
+        <div class="za-tabs">
+            <div class="za-tabs__controls">
+                <div class="za-tabs__tab">
+                    <div id="desktop_app" class="za-tab js-tab _active">
+                        <div class="za-tab__icon za-tab__os_icon" id="os_icon1">
+                            <img src="/img/z-access/desktop_app.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/desktop_app_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__icon za-tab__os_icon" id="os_icon2">
+                            <img src="/img/z-access/desktop_app_mac.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/desktop_app_mac_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__icon za-tab__os_icon" id="os_icon3">
+                            <img src="/img/z-access/desktop_app_linux.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/desktop_app_linux_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__icon za-tab__os_icon" id="os_icon4">
+                            <img src="/img/z-access/desktop_app_os.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/desktop_app_os_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__content">
+                            <h2 class="za-tab__title">Desktop App</h2>
+                            <p class="za-tab__text"></p>
+                        </div>
+                        <div class="za-tab__icons _darkblue">
+                            <i class="zlibicon-desktop" style="font-size: 14px"></i>
+                        </div>
+                    </div>
+                    <div id="browser_extensions" class="za-tab js-tab">
+                        <div class="za-tab__icon">
+                            <img src="/img/z-access/extensions.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/extensions_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__content">
+                            <h2 class="za-tab__title">Browser Extension</h2>
+                        </div>
+                        <div class="za-tab__icons _darkgreen">
+                            <i class="zlibicon-desktop" style="font-size: 14px"></i>
+                        </div>
+                    </div>
+                    <div id="android_app" class="za-tab js-tab">
+                        <div class="za-tab__icon">
+                            <img src="/img/z-access/android_app.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/android_app_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__content">
+                            <h2 class="za-tab__title">Android App</h2>
+                            <p class="za-tab__text">Connect through the mobile app</p>
+                        </div>
+                        <div class="za-tab__icons _green">
+                            <i class="zlibicon-mobile" style="font-size: 15px"></i>
+                        </div>
+                    </div>
+                    <div id="telegram_bot" class="za-tab js-tab">
+                        <div class="za-tab__icon">
+                            <img src="/img/z-access/telegram_bot.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/telegram_bot_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__content">
+                            <h2 class="za-tab__title">Telegram Bot</h2>
+                            <p class="za-tab__text">Connect through the Telegram bot</p>
+                        </div>
+                        <div class="za-tab__icons _blue">
+                            <i class="zlibicon-desktop" style="font-size: 14px;"></i>
+                            <i class="zlibicon-mobile" style="font-size: 15px"></i>
+                        </div>
+                    </div>
+                    <div id="email" class="za-tab js-tab">
+                        <div class="za-tab__icon">
+                            <img src="/img/z-access/email.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/email_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__content">
+                            <h2 class="za-tab__title">Magic Email</h2>
+                            <p class="za-tab__text">For account access and registration</p>
+                        </div>
+                        <div class="za-tab__icons _yellow">
+                            <i class="zlibicon-desktop" style="font-size: 14px;"></i>
+                            <i class="zlibicon-mobile" style="font-size: 15px;"></i>
+                        </div>
+                    </div>
+                    <div id="useful_link" class="za-tab js-tab">
+                        <div class="za-tab__icon">
+                            <img src="/img/z-access/useful_link.svg" alt="" class="za-tab__icon-pic">
+                            <img src="/img/z-access/useful_link_grey.svg" alt="" class="za-tab__icon-pic _grey">
+                        </div>
+                        <div class="za-tab__content">
+                            <h2 class="za-tab__title">Useful Links</h2>
+                            <p class="za-tab__text">For curious book lovers</p>
+                        </div>
+                        <div class="za-tab__icons _darkpurple">
+                            <i class="zlibicon-desktop" style="font-size: 14px"></i>
+                            <i class="zlibicon-mobile" style="font-size: 15px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="za-tabs__data">
+                <div class="za-tabs__item _active" data-type="desktop_app">
+                    <h3>Desktop Launcher</h3>
+                    <p>Introducing the alpha version of Z-Library launcher for desktop. Say goodbye to the hassle of searching for a working website link, as our desktop launcher takes care of everything for you. What`s more, it operates seamlessly over the TOR network, ensuring uninterrupted access to the library while keeping your browsing experience anonymous and your privacy protected.</p>
+                    <h4 style="margin: 34px 0 14px;">Download for</h4>
+                    <div class="za-download-links">
+                        <a href="/soft/zlibrary-setup-latest.exe" class="za-download-link">
+                            <div class="za-download-link-icon">
+                                <img src="/img/z-access/windows.svg" alt="">
+                            </div>
+                            <div class="za-download-link-title">Windows<span> 120 MB</span></div>
+                        </a>
+                        <a href="/soft/zlibrary-setup-latest.dmg" class="za-download-link">
+                            <div class="za-download-link-icon">
+                                <img src="/img/z-access/macos.svg" alt="">
+                            </div>
+                            <div class="za-download-link-title">macOS<span> 119 MB</span></div>
+                        </a>
+                        <a href="/soft/zlibrary-setup-latest.deb" class="za-download-link">
+                            <div class="za-download-link-icon">
+                                <img src="/img/z-access/linux.svg" alt="">
+                            </div>
+                            <div class="za-download-link-title">Linux<span> 96 MB</span></div>
+                        </a>
+                    </div>
+                    <div class="za-desktop-info">
+                        <!-- Latest Release -->
+                    </div>
+                </div>
+                <div class="za-tabs__item" data-type="browser_extensions">
+                    <h3>Browser Extension</h3>
+                    <p>We also have a browser extension! With it, you can access the library website in just one click. No need to search for available domains, as the extension will handle everything for you.</p>
+
+                    <ul class="za-extensions-list">
+                        <li><a href="https://chrome.google.com/webstore/detail/z-library/eebjmekegoofamhbnjoboeifabhbbddn/related" target="_blank"><img src="/img/z-access/logos_chrome.svg" alt="Chrome" />For Google Chrome browser</a></li>
+                        <li><a href="https://addons.mozilla.org/en-US/firefox/addon/z-library/" target="_blank"><img src="/img/z-access/logos_firefox.svg" alt="Firefox" />For Mozilla Firefox browser</a></li>
+                    </ul>
+
+                </div>
+                <div class="za-tabs__item" data-type="android_app">
+                    <h3>Android App</h3>
+                    <div class="za-tabs__android">
+                        <div class="za-tabs__android-content">
+
+                            <p style="margin-bottom: 32px;">Use our Android app for a better experience on your mobile device. With a simple and user-friendly interface, you can easily get access to our vast book collection. Download, save to favorites and send books to your Email or Kindle device. Install the app now and start your reading journey today!</p>
+
+                            <div class="za-tabs__android-data">
+                                <div class="za-tabs__android-data-qr">
+                                    <img src="/barcode_generator.php?s=qr&w=169&h=169&f=svg&d=https://zlibrary-china.se/soft/zlibrary-app-latest.apk" class="qrcode">
+                                </div>
+                                <div class="za-tabs__android-data-app">
+                                    <a href="/soft/zlibrary-app-latest.apk" class="android-btn">
+                                        <img src="/img/z-access/android.svg" alt="" class="android-btn__pic">
+                                        <div class="android-btn__content">
+                                            <div class="android-btn__title">Download</div>
+                                            <div class="android-btn__subtitle">Android APK</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                                                    </div>
+                    </div>
+
+                </div>
+                <div class="za-tabs__item" data-type="telegram_bot">
+                    <h3>Personal Telegram bot</h3>
+                    <p style="margin-bottom: 24px;">Now the Telegram bot is also personal! Access our vast book collection directly from your Telegram account. Simply create a bot and connect it to your library account using the button below. Enjoy additional downloads and expand your reading experience!</p>
+                    <!-- <button type="submit" class="z-btn z-btn-narrow z-btn-primary" style="margin-top: 12px;" onclick="createTelegramPBBindingModal(this)">Try it now!</button> -->
+                                            <p>To get access to your personal bot, you should first authorize on our website</p>
+                        <div class="form-group tg-form">
+                            <div class="za-tg-bot-form-info">
+                                <button type="submit" class="z-access__sub-btn" onclick="CurrentUser.showAuthPopup('login', null, null, '/z-access?'+location.hash)">Log in</button>
+                                <div class="or-separator">or</div>
+                                <button type="submit" class="z-access__sub-btn z-btn-primary" onclick="CurrentUser.showAuthPopup('registration', null, null, '/z-access?'+location.hash)">Create an Account</button>
+                            </div>
+                        </div>
+                                    </div>
+                <div class="za-tabs__item" data-type="email">
+                    <h3>Magic Email</h3>
+                    <p>Today, we offer the possibility of creating an account or restoring access to an existing one through a special email address.</p>
+                    <p>How does it work? Just send any letter from your mailbox to our magic email address <a href="mailto:blackbox@zlib.se">blackbox@zlib.se</a>, and you will receive your personal access to Z-Library in the auto-generated letter within 3–5 minutes. So simple!</p>
+                    <h4>This might be useful if:</h4>
+                    <ul>
+                        <li>you haven't received or lost your personal domains;</li>
+                        <li>you forgot your account password and want to restore access;</li>
+                        <li>you want to create a new account.</li>
+                    </ul>
+                </div>
+                <div class="za-tabs__item" data-type="useful_link">
+                    <h3>Useful Links</h3>
+                    <h4 style="margin: 24px 0 20px;">Z-Library Official links</h4>
+                    <div class="za-tabs-link js-copy-domain">
+                        <div class="za-tabs-link__label">Web</div>
+                        <a href="https://singlelogin.se" target="_blank" class="za-tabs-link__value za-tabs-link__bg">
+                            <span>https://singlelogin.se</span>
+                            <i class="zlibicon-copy"></i>
+                        </a>
+                    </div>
+                    <div class="za-tabs-link js-copy-domain">
+                        <div class="za-tabs-link__label">TOR</div>
+                        <a href="http://loginzlib2vrak5zzpcocc3ouizykn6k5qecgj2tzlnab5wcbqhembyd.onion" target="_blank" class="za-tabs-link__value za-tabs-link__bg">
+                            <span>
+                                http://loginzlib2vrak5zzpcocc3ouizykn6k5qecgj2tzlnab5wcbqhembyd.onion                            </span>
+                            <i class="zlibicon-copy"></i>
+                        </a>
+                    </div>
+
+                    <h4 style="margin: 32px 0 20px;">Our social networks</h4>
+
+                    <ul class="za-socials">
+                        <li><a href="https://twitter.com/Z_Lib_official" data-original-title="On Twitter" data-tooltip="On Twitter" target="_blank"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="40" height="40" rx="20" fill="#55ACE3" />
+                                    <path d="M30.6 14.9C29.9 15.2 29.1 15.4 28.3 15.5C29.1 15 29.8 14.2 30.1 13.3C29.3 13.8 28.5 14.1 27.5 14.3C26.8 13.5 25.7 13 24.6 13C22.4 13 20.6 14.8 20.6 17C20.6 17.3 20.6 17.6 20.7 17.9C17.4 17.7 14.4 16.1 12.4 13.7C12.1 14.3 11.9 15 11.9 15.7C11.9 17.1 12.6 18.3 13.7 19C13 19 12.4 18.8 11.9 18.5C11.9 20.4 13.3 22.1 15.1 22.4C14.8 22.5 14.4 22.5 14 22.5C13.7 22.5 13.5 22.5 13.2 22.4C13.7 24 15.2 25.2 17 25.2C15.6 26.3 13.9 26.9 12 26.9C11.7 26.9 11.4 26.9 11 26.8C12.8 27.9 14.9 28.6 17.2 28.6C24.6 28.6 28.6 22.5 28.6 17.2V16.7C29.4 16.4 30.1 15.7 30.6 14.9Z" fill="white" />
+                                </svg></a></li>
+                        <li><a href="https://mastodon.social/@Z_Lib_official" data-original-title="On Mastadon" data-tooltip="On Mastadon" target="_blank"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="40" height="40" rx="20" fill="#5540CC" />
+                                    <path d="M20.1457 9C17.3333 9.02292 14.6273 9.32725 13.0507 10.0514C13.0507 10.0514 9.92482 11.4503 9.92482 16.2233C9.92482 17.316 9.90282 18.6222 9.93766 20.0082C10.0504 24.675 10.7929 29.2757 15.1077 30.417C17.0977 30.9441 18.8064 31.0541 20.1814 30.9789C22.6766 30.8405 24.0772 30.0879 24.0772 30.0879L23.9947 28.2784C23.9947 28.2784 22.2118 28.8403 20.2089 28.7716C18.2262 28.7037 16.1316 28.558 15.8107 26.1224C15.7805 25.8961 15.7658 25.6679 15.7667 25.4395C15.7667 25.4395 17.7137 25.9152 20.1814 26.028C21.6912 26.0977 23.1056 25.94 24.5438 25.7686C27.3002 25.4386 29.7001 23.7409 30.0017 22.189C30.4774 19.7442 30.438 16.2233 30.438 16.2233C30.438 11.4503 27.3112 10.0514 27.3112 10.0514C25.7346 9.32725 23.0277 9.02292 20.2144 9H20.1457ZM16.963 12.729C18.1345 12.729 19.0209 13.1791 19.6076 14.0802L20.1777 15.0362L20.7488 14.0802C21.3355 13.1791 22.2219 12.729 23.3934 12.729C24.4063 12.729 25.2222 13.0847 25.8455 13.7795C26.4487 14.4734 26.7493 15.4121 26.7493 16.5937V22.3714H24.4604V16.7642C24.4604 15.5817 23.9627 14.9812 22.9681 14.9812C21.8681 14.9812 21.3162 15.6935 21.3162 17.1015V20.1714H19.0402V17.1006C19.0402 15.6935 18.4892 14.9812 17.3883 14.9812C16.3937 14.9812 15.896 15.5817 15.896 16.7642V22.3723H13.6062V16.5927C13.6062 15.4121 13.9068 14.4734 14.5109 13.7786C15.1342 13.0847 15.9501 12.729 16.963 12.729Z" fill="white" />
+                                </svg></a></li>
+                        <!-- <li><a href="" data-tooltip="On VK"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="40" height="40" rx="20" fill="#0077FF" />
+                                    <path d="M20.9825 27C13.466 27 9.17864 21.7447 9 13H12.7651C12.8888 19.4184 15.6646 22.1371 17.8632 22.6977V13H21.4085V18.5355C23.5796 18.2973 25.8607 15.7748 26.6302 13H30.1755C29.8855 14.4391 29.3075 15.8017 28.4776 17.0025C27.6477 18.2033 26.5837 19.2166 25.3523 19.979C26.7269 20.6756 27.941 21.6615 28.9145 22.8717C29.888 24.082 30.5988 25.489 31 27H27.0974C26.7373 25.6876 26.0054 24.5128 24.9934 23.6228C23.9814 22.7328 22.7343 22.1673 21.4085 21.997V27H20.9825Z" fill="white" />
+                                </svg></a></li> -->
+                        <li><a href="https://t.me/zlibrary_official" data-original-title="On Telegram" data-tooltip="On Telegram" target="_blank"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="40" height="40" rx="20" fill="#27A6E5" />
+                                    <path d="M28 12.6022L24.9946 28.2923C24.9946 28.2923 24.5741 29.3801 23.4189 28.8584L16.4846 23.3526L16.4524 23.3364C17.3891 22.4654 24.6524 15.7027 24.9698 15.3961C25.4613 14.9214 25.1562 14.6387 24.5856 14.9974L13.8568 22.053L9.71764 20.6108C9.71764 20.6108 9.06626 20.3708 9.00359 19.8491C8.9401 19.3265 9.73908 19.0439 9.73908 19.0439L26.6131 12.1889C26.6131 12.1889 28 11.5579 28 12.6022Z" fill="#FEFEFE" />
+                                </svg></a></li>
+                        <li><a href="https://t.me/zlib_china_official" data-original-title="Chinese channel on Telegram" data-tooltip="Chinese channel on Telegram" target="_blank"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 40C31.0457 40 40 31.0457 40 20C40 8.95431 31.0457 0 20 0C8.95431 0 0 8.95431 0 20C0 31.0457 8.95431 40 20 40Z" fill="#ED4C5C" />
+                                    <path d="M12.3529 13.76L15.6471 16L14.4118 12.32L17.7059 10H13.6294L12.3529 6.4L11.1176 10H7L10.2941 12.32L9.05882 16L12.3529 13.76ZM17.8294 16.52L16.8824 16.72L17.7882 17.08V18L18.4059 17.32L19.3118 17.64L18.7765 16.88L19.3529 16.16L18.4059 16.36L17.8294 15.6V16.52ZM19.2294 13.8L18.5294 14.4L19.4765 14.32L19.8882 15.2L20.0529 14.28L21 14.2L20.1765 13.72L20.3824 12.8L19.6824 13.4L18.8588 12.92L19.2294 13.8ZM19.4765 10.68L19.7647 11.6L20.0529 10.72H21L20.2588 10.16L20.5471 9.24L19.7647 9.8L19.0235 9.2L19.3118 10.12L18.5294 10.64L19.4765 10.68ZM17.8294 7.48V8.4L18.4059 7.64L19.3529 7.84L18.7765 7.12L19.3118 6.36L18.4059 6.72L17.7882 6V6.92L16.8824 7.28L17.8294 7.48Z" fill="#FFE62E" />
+                                    <path d="M29 16.6022L25.9946 32.2923C25.9946 32.2923 25.5741 33.3801 24.4189 32.8584L17.4846 27.3526L17.4524 27.3364C18.3891 26.4654 25.6524 19.7027 25.9698 19.3961C26.4613 18.9214 26.1562 18.6387 25.5856 18.9974L14.8568 26.053L10.7176 24.6108C10.7176 24.6108 10.0663 24.3708 10.0036 23.8491C9.9401 23.3265 10.7391 23.0439 10.7391 23.0439L27.6131 16.1889C27.6131 16.1889 29 15.5579 29 16.6022Z" fill="#FEFEFE" />
+                                </svg></a></li>
+                    </ul>
+
+                    <h4 style="margin: 32px 0 20px;">Where to find information on relevant links</h4>
+
+                    <div class="za-tabs-link">
+                        <div class="za-tabs-link__label">Wikipedia</div>
+                        <a href="https://en.wikipedia.org/wiki/Z-Library" target="_blank" class="za-tabs-link__value">
+                            <span>
+                                https://en.wikipedia.org/wiki/Z-Library
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="za-tabs-link">
+                        <div class="za-tabs-link__label">Reddit</div>
+                        <a href="https://www.reddit.com/r/zlibrary" target="_blank" class="za-tabs-link__value">
+                            <span>
+                                https://www.reddit.com/r/zlibrary
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="za-tabs__decor _active" data-type="desktop_app">
+                <img src="/img/z-access/polygon_desktop_app.svg" alt="" class="za-tabs__decor-shape">
+
+                <div class="za-tabs__decor-pic" style="min-width: 211px;bottom: 37px;right: 41px;">
+                    <img src="/img/z-access/pic_desktop_app.svg" alt="Personal Domain">
+                </div>
+            </div>
+
+            <div class="za-tabs__decor" data-type="android_app">
+                <img src="/img/z-access/polygon_android_app.svg" alt="" class="za-tabs__decor-shape">
+                <div class="za-tabs__decor-pic" style="right: -4px;bottom: -78px;">
+                    <img src="/img/z-access/pic_android_app.png" srcset="/img/z-access/pic_android_app.png 1x, /img/z-access/pic_android_app@2x.png 2x" alt="Android App">
+                </div>
+            </div>
+
+            <div class="za-tabs__decor" data-type="telegram_bot">
+                <img src="/img/z-access/polygon_telegram_bot.svg" alt="" class="za-tabs__decor-shape">
+                <div class="za-tabs__decor-pic" style="right: 14px;bottom: 16px;width: 373px;">
+                    <img src="/img/z-access/pic_telegram_bot.svg" alt="Telegram Bot">
+                </div>
+            </div>
+
+            <div class="za-tabs__decor" data-type="email">
+                <img src="/img/z-access/polygon_email.svg" alt="" class="za-tabs__decor-shape">
+                <div class="za-tabs__decor-pic _anim-main" style="width: 345px;right: -4px;bottom: -13px;">
+                    <img src="/img/z-access/pic_email_compose.svg" alt="Email">
+                </div>
+                <div class="za-tabs__decor-pic _anim-sub" style="width: 345px;right: -4px;bottom: -13px;">
+                    <img src="/img/z-access/pic_email_response.svg" alt="Email">
+                </div>
+            </div>
+
+            <div class="za-tabs__decor" data-type="useful_link">
+                <img src="/img/z-access/polygon_useful_link.svg" alt="" class="za-tabs__decor-shape">
+                <div class="za-tabs__decor-pic" style="width: 173px;right: -25px;bottom: 30px;">
+                    <img src="/img/z-access/pic_useful_link.svg" alt="Useful Links">
+                </div>
+            </div>
+
+            <div class="za-tabs__decor" data-type="browser_extensions">
+                <img src="/img/z-access/polygon_extensions.svg" alt="" class="za-tabs__decor-shape">
+                <div class="za-tabs__decor-pic extensions_decor_wrap img_wrap" style="width: 384px;right: 1px;bottom: 0px;">
+                    <img class="extensions_decor" src="/img/z-access/extensions_decor.svg" alt="Browser Extensions">
+                    <img class="extensions_decor" src="/img/z-access/extensions_decor_2.svg" alt="Browser Extensions">
+                    <img class="extensions_decor" src="/img/z-access/extensions_decor_3.svg" alt="Browser Extensions">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="za-quote">
+<figure class="quote">
+    <blockquote class="quote__body">
+        <p>The only thing that you absolutely have to know, is the location of the library.</p>
+    </blockquote>
+    <figcaption class="quote__credits">— <cite>Albert Einstein</cite></figcaption>
+</figure>
+        </div>
+<style>
+    .telegram-color:hover {
+        background: linear-gradient(#2AABEE, #229ED9);
+        color: #fff;
+    }
+</style>
+<script>
+    window.addEventListener('TelegramBotPinned', function(event) {
+        $('.pbot-name').attr('href', '@' + event.detail.name);
+        $('.pbot-name span').html('@' + event.detail.name);
+    });
+    $(document).ready(function() {
+        let extentionsDecor = {
+            timeout: null,
+            nodes: $('.extensions_decor'),
+            pointer: 0,
+            start: function() {
+                $(this.nodes).hide();
+                $(this.nodes[this.pointer]).show();
+                if (this.pointer < 2) {
+                    this.pointer++;
+                } else {
+                    this.pointer = 0;
+                }
+                this.timeout = setTimeout(() => {
+                    this.start()
+                }, 3000);
+            },
+            stop: function() {
+                clearTimeout(this.timeout);
+                this.pointer = 0;
+            }
+        }
+
+
+        $('.page-title-back-arrow').attr('href', document.referrer)
+        $('.pbot-name').attr('href', '@' + window.TelegramBotName);
+        $('.pbot-name span').html('@' + window.TelegramBotName);
+        $('.js-tab').on('click', function() {
+            const id = $(this).attr('id');
+            location.hash = id + '_tab';
+            $('.js-tab').removeClass('_active');
+            $(this).addClass('_active');
+
+            $('*[data-type]').removeClass('_active');
+            $('*[data-type="' + id + '"]').addClass('_active');
+            if (id === 'browser_extensions') {
+                extentionsDecor.start();
+            } else {
+                extentionsDecor.stop();
+            }
+        })
+
+        $('.js-copy-domain').on('click', function(e) {
+            e.preventDefault();
+            let link;
+            link = $(this).attr('data-href')
+            if (!link) {
+                link = $($(this).find('a span')[0]).html()
+            }
+            navigator.clipboard.writeText(link)
+            new ZLibraryNotify().info('Address is copied to your clipboard')
+        })
+
+        const $tgStatusLoading = $('#tgStatusLoading')
+        if ($tgStatusLoading.length) {
+            new ZLibrarySpinner($tgStatusLoading).color('#7d7d7d').start()
+            doLoadTelegramBindingStatus()
+        }
+
+        if (location.hash) {
+            $(location.hash.slice(0, -4)).click();
+        }
+        copy = function(text) {
+            navigator.clipboard.writeText(text)
+            new ZLibraryNotify().info('Address is copied to your clipboard')
+        }
+        createAppLoginModal = function() {
+            $("#zlibrary-modal-styled").find('.simplebar-content').html('');
+            $(".modal-dialog").removeClass("tg-connect-dialog");
+
+            new ZLibraryModal({
+                container: 'zlibrary-modal-styled',
+                element: 'android-app-modal',
+                // title: 'How to connect bot',
+                modalDialogClass: 'android-app-dialog',
+                width: 348,
+                autoFocus: false,
+                afterRender: function() {
+                    new SimpleBar(($('.android-app-modal-content').parent('.modal-body'))[0], {
+                        autoHide: false
+                    })
+                }
+            }).show()
+        }
+        $(window).on('modalOpened', function(e) {
+            if (e.detail.name == 'android-app-modal') {
+                $('.za-tabs__android-data-qr').hide()
+            }
+        })
+        $(window).on('modalClosed', function(e) {
+            if (e.detail.name == 'android-app-modal') {
+                $('.za-tabs__android-data-qr').show()
+            }
+        })
+        $('#zlibrary-modal-styled').on('hidden.bs.modal', function(e) {
+            $('.za-tabs__android-data-qr').show()
+        })
+
+        checkOSIcon = function() {
+            $('.za-tab__os_icon').hide();
+            if (window.innerWidth > 768) {
+                if (navigator.platform.startsWith('Win')) {
+                    $("#os_icon1").show()
+                } else if (navigator.platform.startsWith('Linux')) {
+                    $("#os_icon3").show()
+                } else if (navigator.platform.startsWith('Mac')) {
+                    $("#os_icon2").show()
+                } else {
+                    $("#os_icon1").show()
+                }
+            } else {
+                $("#os_icon4").show()
+            }
+        }
+        checkOSIcon();
+        if (window.innerWidth < 769) {
+            $("#android_app").click();
+        }
+        $(window).on('resize', function() {
+            checkOSIcon();
+        })
+
+        $('.za-socials a').tooltip({
+            container: 'body',
+            placement: 'bottom',
+        })
+        var userAgent = navigator.userAgent.toLowerCase();
+
+        if (userAgent.indexOf('chrome') > -1) {
+            $("#plugin-not-installed-button").attr('href', '#')
+        } else if (userAgent.indexOf('firefox') > -1) {
+            $("#plugin-not-installed-button").attr('href', 'https://addons.mozilla.org/en-US/firefox/addon/z-library/')
+        }
+    })
+</script>                                                                    </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="height:60px">
+                    <td id="footer" valign="top">
+                        <div class="container-fluid">
+<!-- footer begin -->
+<div class="row ">
+        <div class="footer-copyright w-5-hide w-3-2-show-inline">
+        <span class="w-5-hide w-1-2-show p-left-0">Since 2009</span>
+        <span class="w-3-show w-1-2-hide p-left-0">Since 2009</span>
+    </div>
+        <div class="footer-right w-5-hide w-4-2-show">
+        <div class="footer-nav-right" role="navigation">
+            <ul class="nav navbar-nav">
+                
+        <li class="icon-link">
+            <a href="/android" title="<div style='white-space: nowrap;'>ZLibrary app</div>" data-toggle="tooltip" data-html="true" onmouseover="$(this).tooltip('show')">
+                <img src="/img/icon-android.svg" class="colored" width="36" height="36">
+                <img src="/img/icon-android-gray.svg" class="gray" width="36" height="36">
+            </a>
+        </li>
+        
+        <li class="icon-link">
+            <button onclick="window.location.replace('http://loginzlib2vrak5zzpcocc3ouizykn6k5qecgj2tzlnab5wcbqhembyd.onion')" data-toggle="tooltip" data-placement="top" data-html="true" title="<div style='white-space: nowrap;'>TOR version</div>" onmouseover="$(this).tooltip('show')">
+                <img src="/img/icon-tor.svg" class="colored" width="36" height="36">
+                <img src="/img/icon-tor-gray.svg" class="gray" width="36" height="36">
+            </button>
+        </li>
+                    </ul>
+        </div>
+    </div>
+    <div class="footer-copyright w-3-2-show">
+        <span class="w-5-show w-3-hide p-left-0">Since 2009</span>
+        <span class="w-3-p-left-0">
+            <a class="footer-mailto" href="mailto: support@z-lib.se">support@z-lib.se</a>
+        </span>
+    
+        <span style="white-space: nowrap;"> <a href="https://t.me/zlibrary_official" class="footer-link"><i class="zlibicon-telegram"></i><span>Official сhannel</span></a></span>
+        <span style="white-space: nowrap;"> <a href="https://go-to-zlibrary.se" class="footer-link" target="_blank"><i class="zlibicon-key"></i><span>Z-Access</span></a></span>
+    </div>
+        </div>
+
+<!-- Telegram modal helper -->
+<div style="display: none" id="tg-connect-modal">
+    <div class="tg-connect-modal-content">
+    <div>
+        <div class="tg-connect-step">
+            <div class="tg-connect-line">
+                <span class="tg-connect-number"><span>1</span></span>
+                <span class="tg-connect-line__text">
+                        Follow <a target="_blank" href="https://t.me/BotFather">this link</a> or find "@BotFather" bot on Telegram                    </span>
+            </div>
+        </div>
+
+        <div class="tg-connect-step">
+            <div class="tg-connect-line">
+                <span class="tg-connect-number"><span>2</span></span>
+                <span class="tg-connect-line__text">
+                        Send /newbot command                    </span>
+            </div>
+            <div class="tg-connect-img">
+                <img src="/img/tg/pb1.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="tg-connect-step">
+            <div class="tg-connect-line">
+                <span class="tg-connect-number"><span>3</span></span>
+                <span class="tg-connect-line__text">
+                        Specify a name for your chatbot                    </span>
+            </div>
+            <div class="tg-connect-img">
+                <img src="/img/tg/pb2.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="tg-connect-step">
+            <div class="tg-connect-line">
+                <span class="tg-connect-number"><span>4</span></span>
+                <span class="tg-connect-line__text">
+                        Choose a username for the bot                    </span>
+            </div>
+            <div class="tg-connect-img">
+                <img src="/img/tg/pb3.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="tg-connect-step">
+            <div class="tg-connect-line">
+                <span class="tg-connect-number"><span>5</span></span>
+                <span class="tg-connect-line__text">
+                        Copy an entire last message from BotFather and paste it here                    </span>
+            </div>
+            <div class="tg-connect-content">
+                <textarea class="tg-connect-textarea js-tg-textarea" style="width: 100%" rows="5"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="tg-connect-footer">
+            <button class="tg-personal-btn _disabled js-tg-connect-btn" onclick="telegramPBBindAction(this)">Connect!</button>
+            <button onclick="$(this).closest('.modal').modal('hide')">Close</button>
+        </div>
+    </div>
+</div></div>
+<div style="display: none" id="android-app-modal">
+    <div class="android-app-modal-content">
+    <div><strong>Scan QR code with Z-Lib app</strong></div>
+    <img style="margin-top: 8px;" src="/barcode_generator.php?s=qr&w=200&h=200&f=svg&d=" alt="" />
+    <div style="margin-top: 24px;"><strong>Copy and paste the Token into Z-Lib app</strong></div>
+    <div style="margin-top: 8px; color: #8C8C8C;">
+        <div style="border: 1px solid #D9D9D9;padding: 8px;word-wrap: break-word;text-align: left;"></div>
+        <div style="border: 1px solid #D9D9D9;border-top:none;padding: 8px;text-align: center;">
+            <div><span class="copy" onclick="copy('')"><span class="copytext-container"></span> Copy</span></div>
+        </div>
+    </div>
+
+    <div style="margin: 24px 0px 0; text-align: left;">
+        <b class="color-red">Note:</b> The QR code can only be scanned through the latest version of Z-Library app.
+    </div>
+</div></div>
+
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- icons preload hack -->
+        <i class="zlibicon-check" style="font-size: 1px; visibility: hidden; position: absolute; top: 0; left: 0;"></i>
+
+        <div class="modal fade" id="zlibrary-modal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header hidden">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body" style="position: relative; min-height: 80px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="zlibrary-modal-styled" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header hidden">
+                        <h1 class="modal-title"></h1>
+                    </div>
+                    <div class="modal-body"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="zlibrary-modal-auth" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ggAdditionalHtml -->
+        <!--LiveInternet counter--><script type="text/javascript">
+new Image().src = "//counter.yadro.ru/hit;bookzz?r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random();</script><!--/LiveInternet-->
+<iframe name="uploader" id="uploader" style="border:0px solid #ddd; width:90%; display:none;"></iframe><script></script>        <!-- /ggAdditionalHtml -->
+        
+                
+        <script>
+            if (typeof pagerOptions !== "undefined" && pagerOptions) {
+                $('div.paginator').paginator(pagerOptions);
+                let page = parseInt((new URL(document.location)).searchParams.get("page"));
+
+                if (page > pagerOptions.pagesTotal) {
+                    document.location.href = document.location.href.replace(/page=\d+/gi, "page="+pagerOptions.pagesTotal);
+                }
+            }
+        </script>
+        <link rel="stylesheet" href="./resources/ext/ensemble/ensemble-social-share.min.css" />
+        <link rel="stylesheet" href="./resources/ext/ensemble/iconset.tmp.css" />
+        <script src="./resources/ext/ensemble/ensemble-social-share.min.js"></script>
+        <script>
+            let domain_to_share = "zlibrary-china.se"
+            if(!domain_to_share){
+                domain_to_share = "zlibrary-global.se"
+            }
+            // const global_link_to_share = location.protocol + '//' + domain_to_share +location.pathname+location.search+location.hash;
+            const social_share_element = document.querySelector('.social-share-buttons');
+            if(social_share_element){
+                new ensemble.SocialShare(social_share_element,{
+                    // namespace
+                    ns: 'share',
+                    domain: domain_to_share,
+                    fx: true,
+                    // root element
+                    root: 'body',
+                    // default classname
+                    className: 'social-share',
+                    // page title to share
+                    // defaults to window.title
+                    title: '',
+                    // description to share
+                    description: '',
+                    // actions to display
+                    displays: null,
+                    // action intents
+                    intents: {
+                    'facebook': 0,
+                    'twitter': 0,
+                    'whatsapp': 1,
+                    'telegram': 1,
+                    'linkedin': 0,
+                    'send-email': 2
+                    },
+                    locale: {
+                        text: 'Hey! This is what you were looking for: %s',
+                    },
+                    // URI strings
+                    uriform: {
+                    'facebook': 'https://facebook.com/sharer.php?u=%url%',
+                    'twitter': 'https://twitter.com/share?url=%url%&text=%title%',
+                    'whatsapp': 'https://api.whatsapp.com/send?text=%text%',
+                    'telegram': 'https://telegram.me/share/url?url=%url%&text=%text%',
+                    'linkedin': 'https://www.linkedin.com/sharing/share-offsite?mini=true&url=%url%&title=%title%&ro=false&summary=%summary%',
+                    'send-email': 'mailto:?subject=%subject%&body=%text%'
+                    },
+                    // selector to find link
+                    selectorLink: {
+                    element: 'link[rel="canonical"]',
+                    attribute: 'href'
+                    },
+                    // selector to find title
+                    selectorTitle: null,
+                    // selector to find description
+                    selectorDescription: {
+                    element: 'meta[name="description"]',
+                    attribute: 'content'
+                    },
+                    // Custom parameters for label
+                    label: {},
+                });
+            }
+            if(!(!!window.localStorage.getItem('supportuslabel'))){
+                $('.support-us-headline').show()
+            }
+            $('.support-us-headline-hide').on('click', function(){
+                window.localStorage.setItem('supportuslabel', false)
+                $('.support-us-headline').hide()
+            })
+        </script>
+    </body>
+</html>
+
