@@ -13,3 +13,5 @@ kramdown:
   input:          GFM
   hard_wrap:      false
   footnote_nr:    1
+  math_engine: mathjax
+  syntax_highlighter: rouge
